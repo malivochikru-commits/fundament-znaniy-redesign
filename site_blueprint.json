@@ -1,0 +1,619 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "project": {
+    "name": "Фундамент Знаний",
+    "nameLatin": "Fundament Znaniy",
+    "domain": "fundament-znaniy.uz",
+    "canonicalUrl": "https://fundament-znaniy.uz",
+    "year": 2026,
+    "status": "Production",
+    "curator": "Алмаз Зафарович",
+    "developer": "Убайдуллаев Дильшод",
+    "contactEmail": "malivochkiru@gmail.com",
+    "copyright": "© 2026 Fundament Znaniy. Все права защищены.",
+    "meta": {
+      "title": "Главная — Фундамент Знаний",
+      "description": "Фундамент Знаний — образовательный сайт по позновательному контенту и Конституция Узбекистана.",
+      "sitemap": "https://fundament-znaniy.uz/sitemap.xml",
+      "charset": "UTF-8",
+      "viewport": "width=device-width, initial-scale=1.0"
+    }
+  },
+  "assets": {
+    "logoSmall": "logo-site-cp.png",
+    "logoLarge": "logo-site.png",
+    "favicon": "https://fundament-znaniy.uz/img/logo-site-cp.png",
+    "appleTouchIcon": "https://fundament-znaniy.uz/img/logo-site-cp.png",
+    "shieldSvg": {
+      "viewBox": "0 0 200 240",
+      "paths": [
+        {
+          "d": "M100 10L20 40V110C20 160 60 200 100 220C140 200 180 160 180 110V40L100 10Z",
+          "stroke": "#ffffff",
+          "strokeWidth": 2,
+          "fill": "none"
+        },
+        {
+          "d": "M100 30L36 55V110C36 150 68 185 100 203C132 185 164 150 164 110V55L100 30Z",
+          "stroke": "#ffffff",
+          "strokeWidth": 1,
+          "fill": "none",
+          "opacity": 0.4
+        }
+      ]
+    }
+  },
+  "designSystem": {
+    "typography": {
+      "headings": {
+        "fontFamily": "'Montserrat', sans-serif",
+        "weights": [300, 400, 500, 600, 700, 800],
+        "usage": "H1, H2, H3 titles, card headers, logo brand text, numbers"
+      },
+      "body": {
+        "fontFamily": "'Nunito', sans-serif",
+        "weights": [300, 400, 500, 600, 700],
+        "usage": "General body paragraphs, article summaries, FAQ content"
+      },
+      "editorialItalics": {
+        "fontFamily": "'Cormorant Garamond', Georgia, serif",
+        "weights": [300, 400],
+        "style": "italic",
+        "usage": "Emphasized brand words in titles (em tags)"
+      },
+      "monospaceBadges": {
+        "fontFamily": "'Space Mono', monospace",
+        "weights": [400, 700],
+        "usage": "Section labels, eyebrow pre-labels, counters, breadcrumbs"
+      }
+    },
+    "colorTokens": {
+      "ink": "#060608",
+      "inkSecondary": "#080810",
+      "inkTertiary": "#08080f",
+      "paper": "#eeeae0",
+      "accent": "#4f8ef7",
+      "accent2": "#a855f7",
+      "accent3": "#06d6a0",
+      "rust": "#f97316",
+      "fog": "#9ca3af",
+      "fog2": "#c8cdd5",
+      "border": "rgba(79, 142, 247, 0.12)",
+      "border2": "rgba(79, 142, 247, 0.06)",
+      "supportWidgetGradient": {
+        "from": "#0ea5e9",
+        "to": "#0284c7"
+      },
+      "glowRatios": {
+        "glowA": 0.18,
+        "glowB": 0.13,
+        "glowC": 0.10,
+        "ambientOpacity": 0.42
+      }
+    },
+    "visualEffects": {
+      "scanlines": "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.04) 3px 4px)",
+      "gridBackground": "linear-gradient(rgba(79, 142, 247, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(79, 142, 247, 0.04) 1px, transparent 1px)",
+      "gridSize": "72px 72px",
+      "glassmorphism": {
+        "nav": "blur(14px)",
+        "preloader": "blur(20px)",
+        "mobileDrawer": "blur(20px)",
+        "modal": "blur(10px)"
+      }
+    }
+  },
+  "preloader": {
+    "label": "Инициализация",
+    "tagline": "Фундамент Знаний",
+    "logoImage": "logo-site-cp.png",
+    "counter": {
+      "min": 0,
+      "max": 100,
+      "unit": "%"
+    },
+    "progressBar": {
+      "gradient": "linear-gradient(90deg, #4f8ef7, #a855f7, #06d6a0)",
+      "height": "5px"
+    }
+  },
+  "navigation": {
+    "header": {
+      "logo": {
+        "title": "Фундамент",
+        "subtitle": "Знаний",
+        "image": "logo-site-cp.png",
+        "href": "/"
+      },
+      "links": [
+        { "title": "ГЛАВНАЯ", "href": "/", "type": "internal" }
+      ],
+      "burgerMenu": {
+        "ariaLabel": "Меню",
+        "lines": 3
+      }
+    },
+    "mobileDrawer": {
+      "closeLabel": "✕",
+      "sections": [
+        {
+          "categoryTitle": "Страницы",
+          "items": [
+            { "title": "Главная", "href": "/", "icon": "home" },
+            { "title": "Пользовательское соглашение", "href": "/user-agreement", "icon": "file-text" },
+            { "title": "Контакты", "href": "/contacts", "icon": "mail" }
+          ]
+        },
+        {
+          "categoryTitle": "Предметы",
+          "items": [
+            {
+              "subjectCode": "ogp",
+              "title": "ОГП",
+              "href": "/predmet/ogp"
+            }
+          ]
+        },
+        {
+          "categoryTitle": "Конституция РУз",
+          "hasSearch": true,
+          "searchPlaceholder": "Поиск по Главам / Статьям…",
+          "emptyStateMessage": "Ничего не найдено. Попробуйте изменить запрос."
+        }
+      ]
+    }
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "eyebrowBadge": "УЗБЕКИСТАН · 2026",
+      "title": {
+        "line1": "Фундамент",
+        "line1Styling": "glitch",
+        "line2": "Знаний",
+        "line2Styling": "accent",
+        "full": "Фундамент Знаний"
+      },
+      "description": "Фундамент Знаний — Здесь вы сможете найти полезную информацию об статьях, знания из книг и многое другое.",
+      "cta": {
+        "text": "Начать изучение",
+        "target": "#topics",
+        "style": "btn-outline"
+      },
+      "scrollIndicator": {
+        "text": "Фундамент Знаний",
+        "direction": "vertical-rl"
+      },
+      "backgroundElements": [
+        "orb-center",
+        "hero-orb-1",
+        "hero-orb-2",
+        "shield-svg"
+      ]
+    },
+    {
+      "id": "marquee",
+      "type": "ticker",
+      "speedDesktop": "28s linear infinite",
+      "speedMobile": "22s linear infinite",
+      "items": [
+        "Фундамент Знаний",
+        "Узбекистан",
+        "Конституция РУз",
+        "Статьи РУз",
+        "Политика",
+        "Открытые Источники"
+      ],
+      "separator": "●"
+    },
+    {
+      "id": "intro",
+      "type": "about",
+      "label": "О проекте",
+      "title": {
+        "line1": "Фундамент -",
+        "line2": "Знаний",
+        "line2Style": "cormorant-italic"
+      },
+      "subtitle": "Добро пожаловать на «Фундамент Знаний»! На нашем сайте мы собрали всё самое необходимое для интеллектуального развития. Здесь вас ждут:",
+      "points": [
+        "Познавательные статьи и материалы.",
+        "Практические советы и лайфхаки на каждый день."
+      ],
+      "visual": {
+        "image": "logo-site.png",
+        "alt": "Intro icon (default)"
+      }
+    },
+    {
+      "id": "constitution",
+      "type": "knowledgeBase",
+      "label": "База знаний",
+      "title": {
+        "line1": "Фундамент",
+        "line2": "вашего развития",
+        "line2Style": "cormorant-italic"
+      },
+      "cards": [
+        {
+          "number": 1,
+          "label": "Статьи",
+          "title": "Полезные материалы",
+          "paragraphs": [
+            "На сайте собраны авторские публикации на самые актуальные темы. Мы тщательно отбираем и структурируем информацию, чтобы предоставлять вам только качественный и интересный контент.",
+            "Читайте наши статьи, чтобы постоянно расширять кругозор, находить свежие идеи и получать ответы на интересующие вас вопросы в удобном формате."
+          ]
+        },
+        {
+          "number": 2,
+          "label": "Литература",
+          "title": "Знания из книг",
+          "paragraphs": [
+            "Нет времени читать сотни страниц? Мы подготовили для вас выжимки главных мыслей, концепций и инсайтов из лучших книг по саморазвитию."
+          ]
+        },
+        {
+          "number": 3,
+          "label": "Практика",
+          "title": "Прикладной опыт",
+          "paragraphs": [
+            "Любая теория приобретает истинную ценность только на практике. Наш проект акцентирует внимание на практических советах, рабочих лайфхаках и проверенных методиках.",
+            "Формируйте полезные привычки, тренируйте критическое мышление и эффективно достигайте поставленных целей, используя собранные нами инструменты."
+          ]
+        },
+        {
+          "number": 4,
+          "label": "Миссия сайта",
+          "title": "Надёжная основа",
+          "paragraphs": [
+            "«Фундамент Знаний» — это современная площадка для тех, кто стремится к непрерывному интеллектуальному росту. Мы верим, что доступ к правильной информации меняет жизнь.",
+            "Инвестируйте время в свое развитие. Заложите прочный фундамент своего интеллекта вместе с нами, узнавая что-то новое каждый день."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "topics",
+      "type": "subjects",
+      "label": "Предметы",
+      "title": "Предметы для изучения материалов",
+      "subtitle": "Выберите предметы / классы / главы / разделы - чтобы подробнее ознакомиться с каждым материалом.",
+      "featuredSubjects": [
+        {
+          "code": "ogp",
+          "number": "01",
+          "badge": "ОГП",
+          "title": "Основы государственной политики — предмет, формирующий гражданскую компетентность и правовую культуру учащихся",
+          "actionText": "Изучить",
+          "href": "/predmet/ogp",
+          "watermarkIcon": "🛡️"
+        }
+      ],
+      "curriculumTree": {
+        "subject": "Основы государственной политики (ОГП)",
+        "grades": [
+          {
+            "grade": 7,
+            "gradeName": "7 класс",
+            "href": "/predmet/ogp/class/7-klass",
+            "chapters": [
+              {
+                "chapterNumber": 1,
+                "title": "Введение в общество и правила поведения",
+                "href": "/predmet/ogp/class/7-klass/glava/vvedenie-v-obshchestvo-i-pravila-povedeniya",
+                "sections": [
+                  {
+                    "title": "Социальные нормы и правила в обществе",
+                    "href": "/predmet/ogp/class/7-klass/glava/vvedenie-v-obshchestvo-i-pravila-povedeniya/razdel/sotsialnye-normy-i-pravila-v-obshchestve"
+                  },
+                  {
+                    "title": "Дисциплина, порядок и закон",
+                    "href": "/predmet/ogp/class/7-klass/glava/vvedenie-v-obshchestvo-i-pravila-povedeniya/razdel/distsiplina-poryadok-i-zakon"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 2,
+                "title": "Права ребенка",
+                "href": "/predmet/ogp/class/7-klass/glava/prava-rebenka",
+                "sections": [
+                  {
+                    "title": "Конвенция ООН о правах ребенка",
+                    "href": "/predmet/ogp/class/7-klass/glava/prava-rebenka/razdel/konventsia-oon-o-pravakh-rebenka"
+                  },
+                  {
+                    "title": "Государственные гарантии защиты прав детей",
+                    "href": "/predmet/ogp/class/7-klass/glava/prava-rebenka/razdel/gosudarstvennye-garantii-zashchity-prav-detey"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 3,
+                "title": "Государственная символика",
+                "href": "/predmet/ogp/class/7-klass/glava/gosudarstvennaya-simvolika",
+                "sections": [
+                  {
+                    "title": "Уважение к Государственному флагу, гербу и гимну",
+                    "href": "/predmet/ogp/class/7-klass/glava/gosudarstvennaya-simvolika/razdel/uvazhenie-k-gosudarstvennomu-flagu-gerbu-i-gimnu"
+                  },
+                  {
+                    "title": "Национальные ценности и патриотизм",
+                    "href": "/predmet/ogp/class/7-klass/glava/gosudarstvennaya-simvolika/razdel/natsionalnye-tsennosti-i-patriotizm"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "grade": 8,
+            "gradeName": "8 класс",
+            "href": "/predmet/ogp/class/8-klass",
+            "chapters": [
+              {
+                "chapterNumber": 1,
+                "title": "Конституция — Основной закон государства",
+                "href": "/predmet/ogp/class/8-klass/glava/konstitutsiya-osnovnoy-zakon-gosudarstva",
+                "sections": [
+                  {
+                    "title": "Понятие Конституции и её значение",
+                    "href": "/predmet/ogp/class/8-klass/glava/konstitutsiya-osnovnoy-zakon-gosudarstva/razdel/ponyatie-konstitutsii-i-ee-znachenie"
+                  },
+                  {
+                    "title": "Основы конституционного строя",
+                    "href": "/predmet/ogp/class/8-klass/glava/konstitutsiya-osnovnoy-zakon-gosudarstva/razdel/osnovy-konstitutsionnogo-stroya"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 2,
+                "title": "Права и свободы человека и гражданина",
+                "href": "/predmet/ogp/class/8-klass/glava/prava-i-svobody-cheloveka-i-grazhdanina",
+                "sections": [
+                  {
+                    "title": "Личные права и свободы",
+                    "href": "/predmet/ogp/class/8-klass/glava/prava-i-svobody-cheloveka-i-grazhdanina/razdel/lichnye-prava-i-svobody"
+                  },
+                  {
+                    "title": "Политические, экономические и социальные права",
+                    "href": "/predmet/ogp/class/8-klass/glava/prava-i-svobody-cheloveka-i-grazhdanina/razdel/politicheskie-ekonomicheskie-i-sotsialnye-prava"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 3,
+                "title": "Государственное устройство Республики Узбекистан",
+                "href": "/predmet/ogp/class/8-klass/glava/gosudarstvennoe-ustroystvo-respubliki-uzbekistan",
+                "sections": [
+                  {
+                    "title": "Органы государственной власти",
+                    "href": "/predmet/ogp/class/8-klass/glava/gosudarstvennoe-ustroystvo-respubliki-uzbekistan/razdel/organy-gosudarstvennoy-vlasti"
+                  },
+                  {
+                    "title": "Местное самоуправление",
+                    "href": "/predmet/ogp/class/8-klass/glava/gosudarstvennoe-ustroystvo-respubliki-uzbekistan/razdel/mestnoe-samoupravlenie"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "grade": 9,
+            "gradeName": "9 класс",
+            "href": "/predmet/ogp/class/9-klass",
+            "chapters": [
+              {
+                "chapterNumber": 1,
+                "title": "Международное право и права человека",
+                "href": "/predmet/ogp/class/9-klass/glava/mezhdunarodnoe-pravo-i-prava-cheloveka",
+                "sections": [
+                  {
+                    "title": "Понятие и принципы международного права",
+                    "href": "/predmet/ogp/class/9-klass/glava/mezhdunarodnoe-pravo-i-prava-cheloveka/razdel/ponyatie-i-printsipy-mezhdunarodnogo-prava"
+                  },
+                  {
+                    "title": "Международная защита прав человека",
+                    "href": "/predmet/ogp/class/9-klass/glava/mezhdunarodnoe-pravo-i-prava-cheloveka/razdel/mezhdunarodnaya-zashchita-prav-cheloveka"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 2,
+                "title": "Избирательное право и избирательная система",
+                "href": "/predmet/ogp/class/9-klass/glava/izbiratelnoe-pravo-i-izbiratelnaya-sistema",
+                "sections": [
+                  {
+                    "title": "Избирательное право в Республике Узбекистан",
+                    "href": "/predmet/ogp/class/9-klass/glava/izbiratelnoe-pravo-i-izbiratelnaya-sistema/razdel/izbiratelnoe-pravo-v-respublike-uzbekistan"
+                  },
+                  {
+                    "title": "Избирательный процесс и политические партии",
+                    "href": "/predmet/ogp/class/9-klass/glava/izbiratelnoe-pravo-i-izbiratelnaya-sistema/razdel/izbiratelnyy-protsess-i-politicheskie-partii"
+                  }
+                ]
+              },
+              {
+                "chapterNumber": 3,
+                "title": "Гражданское общество и государство",
+                "href": "/predmet/ogp/class/9-klass/glava/grazhdanskoe-obshchestvo-i-gosudarstvo",
+                "sections": [
+                  {
+                    "title": "Понятие гражданского общества",
+                    "href": "/predmet/ogp/class/9-klass/glava/grazhdanskoe-obshchestvo-i-gosudarstvo/razdel/ponyatie-grazhdanskogo-obshchestva"
+                  },
+                  {
+                    "title": "Институты гражданского общества",
+                    "href": "/predmet/ogp/class/9-klass/glava/grazhdanskoe-obshchestvo-i-gosudarstvo/razdel/instituty-grazhdanskogo-obshchestva"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "constitution-articles",
+      "type": "constitution",
+      "label": "Конституция РУз",
+      "title": {
+        "line1": "Конституция",
+        "line2": "Республики Узбекистан",
+        "line2Style": "cormorant-italic"
+      },
+      "subtitle": "Изучите статьи Конституции Республики Узбекистан — основного закона страны.",
+      "chapters": [
+        {
+          "number": "01",
+          "chapterRoman": "I",
+          "label": "Конституция Республики Узбекистан — Глава I. Государственный суверенитет",
+          "shortTitle": "Глава I. Государственный суверенитет",
+          "summary": "Статьи 1–6. Суверенитет, служение народу, устройство государства, язык, символы и столица.",
+          "href": "/statyi/konstitutsiya-uzbekistana-glava-1",
+          "watermarkIcon": "⚖️",
+          "articles": [
+            { "number": 1, "title": "Статья 1", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-1" },
+            { "number": 2, "title": "Статья 2", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-2" },
+            { "number": 3, "title": "Статья 3", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-3" },
+            { "number": 4, "title": "Статья 4", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-4" },
+            { "number": 5, "title": "Статья 5", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-5" },
+            { "number": 6, "title": "Статья 6", "href": "/statyi/konstitutsiya-uzbekistana-glava-1/statya-6" }
+          ]
+        },
+        {
+          "number": "02",
+          "chapterRoman": "II",
+          "label": "Конституция Республики Узбекистан — Глава II. Народовластие",
+          "shortTitle": "Глава II. Народовластие",
+          "summary": "Статьи 7–14. Народ как источник власти, представительство, референдум, разделение властей, плюрализм и ценностные основы демократии.",
+          "href": "/statyi/konstitutsiya-uzbekistana-glava-2",
+          "watermarkIcon": "⚖️",
+          "articles": [
+            { "number": 7, "title": "Статья 7", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-7" },
+            { "number": 8, "title": "Статья 8", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-8" },
+            { "number": 9, "title": "Статья 9", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-9" },
+            { "number": 10, "title": "Статья 10", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-10" },
+            { "number": 11, "title": "Статья 11", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-11" },
+            { "number": 12, "title": "Статья 12", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-12" },
+            { "number": 13, "title": "Статья 13", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-13" },
+            { "number": 14, "title": "Статья 14", "href": "/statyi/konstitutsiya-uzbekistana-glava-2/statya-14" }
+          ]
+        },
+        {
+          "number": "03",
+          "chapterRoman": "III",
+          "label": "Конституция Республики Узбекистан — Глава III. Верховенство Конституции и закона",
+          "shortTitle": "Глава III. Верховенство Конституции и закона",
+          "summary": "Статьи 15–16. Верховенство Конституции и закона, высшая юридическая сила и прямое действие, основы правовой системы и требования к нормативным актам.",
+          "href": "/statyi/konstitutsiya-uzbekistana-glava-3",
+          "watermarkIcon": "⚖️",
+          "articles": [
+            { "number": 15, "title": "Статья 15", "href": "/statyi/konstitutsiya-uzbekistana-glava-3/statya-15" },
+            { "number": 16, "title": "Статья 16", "href": "/statyi/konstitutsiya-uzbekistana-glava-3/statya-16" }
+          ]
+        },
+        {
+          "number": "04",
+          "chapterRoman": "IV",
+          "label": "Конституция Республики Узбекистан — Глава IV. Внешняя политика",
+          "shortTitle": "Глава IV. Внешняя политика",
+          "summary": "Статьи 17–18. Принципы международных отношений, миролюбие и формы международного сотрудничества.",
+          "href": "/statyi/konstitutsiya-uzbekistana-glava-4",
+          "watermarkIcon": "⚖️",
+          "articles": [
+            { "number": 17, "title": "Статья 17", "href": "/statyi/konstitutsiya-uzbekistana-glava-4/statya-17" },
+            { "number": 18, "title": "Статья 18", "href": "/statyi/konstitutsiya-uzbekistana-glava-4/statya-18" }
+          ]
+        },
+        {
+          "number": "05",
+          "chapterRoman": "V",
+          "label": "Конституция Республики Узбекистан — Основные права, свободы и обязанности человека и гражданина — Глава V. Общие положения",
+          "shortTitle": "Глава V. Общие положения (Права, свободы и обязанности)",
+          "summary": "Статьи 19–21. Признание и гарантия прав человека, равенство, взаимные обязанности государства и гражданина, непосредственное действие прав и принцип соразмерности.",
+          "href": "/statyi/konstitutsiia-respubliki-uzbekistan-osnovnye-prava-svobody-i-obiazannosti-cheloveka-i-grazhdanina-glava-v-obshchie-polozheniia",
+          "watermarkIcon": "⚖️",
+          "articles": [
+            { "number": 19, "title": "Статья 19", "href": "/statyi/konstitutsiia-respubliki-uzbekistan-osnovnye-prava-svobody-i-obiazannosti-cheloveka-i-grazhdanina-glava-v-obshchie-polozheniia/statya-19" },
+            { "number": 20, "title": "Статья 20", "href": "/statyi/konstitutsiia-respubliki-uzbekistan-osnovnye-prava-svobody-i-obiazannosti-cheloveka-i-grazhdanina-glava-v-obshchie-polozheniia/statya-20" },
+            { "number": 21, "title": "Статья 21", "href": "/statyi/konstitutsiia-respubliki-uzbekistan-osnovnye-prava-svobody-i-obiazannosti-cheloveka-i-grazhdanina-glava-v-obshchie-polozheniia/statya-21" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "type": "accordion",
+      "label": "FAQ",
+      "title": "Ответы на вопросы",
+      "subtitle": "Ответы на интересные вопросы.",
+      "items": [
+        {
+          "question": "Для чего предназначен этот сайт?",
+          "answer": "Наш сайт является официальной образовательной платформой учебного центра «Fundament Znaniy». Здесь вы можете ознакомиться с учебными предметами, прочитать статьи, изучить Конституцию Республики Узбекистан и получить доступ к учебным материалам."
+        },
+        {
+          "question": "Как найти нужные учебные материалы на сайте?",
+          "answer": "Все материалы структурированы по иерархии: «Предметы» → «Классы» → «Главы» → «Разделы». Вы можете выбрать интересующий вас предмет на главной странице и по шагам перейти к конкретному уроку или лекции."
+        },
+        {
+          "question": "Обязательно ли регистрироваться для просмотра материалов?",
+          "answer": "Большая часть информационных материалов и разделов Конституции доступна для чтения всем посетителям сайта без регистрации. Личный кабинет и специфические функции предназначены для администраторов."
+        },
+        {
+          "question": "Где я могу ознакомиться с юридическими условиями использования сайта?",
+          "answer": "В самом низу сайта (в футере) расположена ссылка на «Пользовательское соглашение». Там подробно описаны правила использования материалов сайта, правила конфиденциальности и условия авторского права."
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "columns": {
+      "about": {
+        "brand": "FUNDAMENT ZNANIY",
+        "logo": "logo-site-cp.png",
+        "text": "Образовательный сайт."
+      },
+      "pages": {
+        "title": "Страницы",
+        "links": [
+          { "label": "Главная", "href": "/" },
+          { "label": "Пользовательское соглашение", "href": "/user-agreement" },
+          { "label": "Контактная форма", "href": "/contacts" }
+        ]
+      },
+      "learning": {
+        "title": "Обучение",
+        "links": [
+          { "label": "ОГП", "href": "/predmet/ogp" },
+          { "label": "Конституция РУз", "href": "/statyi" }
+        ]
+      },
+      "contacts": {
+        "title": "Контакты",
+        "email": "malivochkiru@gmail.com",
+        "emailDisplay": "Gmail - malivochkiru@gmail.com"
+      }
+    },
+    "bottomBar": {
+      "copyright": "© 2026 Fundament Znaniy. Все права защищены.",
+      "curator": "Алмаз Зафарович",
+      "developer": "Убайдуллаев Дильшод"
+    }
+  },
+  "supportWidget": {
+    "type": "crm-floating-button",
+    "style": "b24-chat",
+    "position": "bottom-right",
+    "buttonLabel": "Поддержка",
+    "popup": {
+      "title": "Техподдержка",
+      "text": "Нашли ошибку или недочет в работе сайта? Пожалуйста, напишите нам",
+      "action": {
+        "label": "Написать в поддержку",
+        "href": "/contacts",
+        "target": "_blank"
+      }
+    }
+  }
+}

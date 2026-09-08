@@ -1,0 +1,3470 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная — Фундамент Знаний (fundament-znaniy.uz) · Узбекистан 2026</title>
+  <meta name="description" content="Фундамент Знаний — образовательный сайт по познавательному контенту и Конституция Узбекистана. Основы государственной политики (ОГП) 7, 8, 9 классы.">
+  <meta name="keywords" content="Фундамент Знаний, Узбекистан, Конституция Узбекистана, ОГП, 7 класс, 8 класс, 9 класс, образование, статьи, право">
+  <meta name="author" content="Куратор: Алмаз Зафарович, Разработчик: Убайдуллаев Дильшод">
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:title" content="Фундамент Знаний — Образовательный портал Республики Узбекистан">
+  <meta property="og:description" content="Познавательный контент, статьи, интерактивная Конституция РУз и учебная программа ОГП 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fundament-znaniy.uz">
+  <meta property="og:image" content="logo-site-cp.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo-site-cp.png">
+  <link rel="apple-touch-icon" href="logo-site-cp.png">
+
+  <!-- Google Fonts: Montserrat, Nunito, Cormorant Garamond, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Three.js (r128) & GSAP + ScrollTrigger via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. ДИЗАЙН-СИСТЕМА, ТОКЕНЫ И ПЕРЕМЕННЫЕ
+       ========================================================================== */
+    :root {
+      --ink: #04060c;
+      --inkSecondary: #060914;
+      --inkTertiary: #050812;
+      --paper: #eeeae0;
+      --paper-bright: #ffffff;
+      --accent: #4f8ef7;
+      --accent-glow: rgba(79, 142, 247, 0.45);
+      --accent2: #a855f7;
+      --accent3: #06d6a0;
+      --gold: #dfb15b;
+      --gold-glow: rgba(223, 177, 91, 0.35);
+      --rust: #f97316;
+      --fog: #9ca3af;
+      --fog2: #c8cdd5;
+      --border: rgba(79, 142, 247, 0.18);
+      --border2: rgba(79, 142, 247, 0.08);
+      --glass-card: linear-gradient(135deg, rgba(10, 16, 36, 0.90), rgba(6, 10, 24, 0.94));
+      --glass-blur: 24px;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --font-head: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-mono: 'Space Mono', monospace;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--ink);
+      color: var(--paper);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--ink);
+      overflow-x: hidden;
+      color: var(--fog2);
+    }
+
+    body.preloader-active {
+      overflow: hidden;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--ink);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(79, 142, 247, 0.25);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* ==========================================================================
+       2. КИНЕМАТОГРАФИЧЕСКИЕ ТЕНИ ПО УГЛАМ (VIGNETTE) И АТМОСФЕРА
+       ========================================================================== */
+    .cinematic-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(circle at 50% 50%, transparent 35%, rgba(2, 4, 10, 0.45) 65%, rgba(1, 2, 6, 0.94) 100%);
+      box-shadow: inset 0 0 160px 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .crt-scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.08) 3px 4px);
+      opacity: 0.65;
+    }
+
+    .tech-grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: 
+        linear-gradient(rgba(79, 142, 247, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79, 142, 247, 0.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0.15) 100%);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0.15) 100%);
+    }
+
+    /* Единый мастер-холст WebGL */
+    #threejs-master-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+      display: block;
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       3. ПРЕЛОАДЕР (0 - 100%)
+       ========================================================================== */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #03050a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.75s ease, visibility 0.75s ease;
+    }
+
+    #preloader.preloader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .pre-card {
+      position: relative;
+      width: min(92vw, 440px);
+      padding: 44px 36px;
+      background: rgba(10, 16, 32, 0.85);
+      border: 1px solid rgba(79, 142, 247, 0.28);
+      border-radius: 28px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      text-align: center;
+      box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(79, 142, 247, 0.2);
+    }
+
+    .pre-logo-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pre-logo-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79, 142, 247, 0.5) 0%, transparent 70%);
+      animation: prePulse 2.4s infinite ease-in-out;
+    }
+
+    .pre-logo-img {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 18px rgba(79, 142, 247, 0.7));
+    }
+
+    .pre-status-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .pre-counter {
+      font-family: var(--font-head);
+      font-size: 48px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent) 70%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pre-bar-track {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .pre-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #4f8ef7, #a855f7, #06d6a0);
+      border-radius: 99px;
+      box-shadow: 0 0 16px rgba(79, 142, 247, 0.8);
+      transition: width 0.12s linear;
+    }
+
+    .pre-tagline {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(200, 205, 213, 0.65);
+    }
+
+    @keyframes prePulse {
+      0%, 100% { transform: scale(0.92); opacity: 0.5; }
+      50% { transform: scale(1.18); opacity: 0.9; }
+    }
+
+    /* ==========================================================================
+       4. НАВИГАЦИОННАЯ ПАНЕЛЬ (HEADER)
+       ========================================================================== */
+    #main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 76px;
+      background: rgba(5, 7, 15, 0.76);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    #main-nav.scrolled {
+      background: rgba(4, 6, 12, 0.94);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      height: 70px;
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      padding: 0 4vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(79, 142, 247, 0.08);
+      border: 1px solid rgba(79, 142, 247, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
+    }
+
+    .brand-link:hover .brand-icon-box {
+      transform: scale(1.05);
+      border-color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .brand-icon-box img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .nav-links-desktop {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links-desktop a {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--fog2);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+      position: relative;
+    }
+
+    .nav-links-desktop a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      transition: width 0.3s var(--transition-smooth);
+    }
+
+    .nav-links-desktop a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(79, 142, 247, 0.6);
+    }
+
+    .nav-links-desktop a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta-btn {
+      padding: 10px 24px;
+      font-family: var(--font-head);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(79, 142, 247, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta-btn:hover {
+      background: linear-gradient(135deg, rgba(79, 142, 247, 0.6), rgba(168, 85, 247, 0.6));
+      box-shadow: 0 0 20px rgba(79, 142, 247, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      width: 44px;
+      height: 44px;
+      background: rgba(79, 142, 247, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-burger.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .nav-burger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-burger.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* ==========================================================================
+       5. ВЫДВИЖНОЕ МЕНЮ (DRAWER OVERLAY)
+       ========================================================================== */
+    #nav-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(3, 5, 10, 0.94);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #nav-drawer.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .drawer-content {
+      width: min(100vw, 480px);
+      height: 100%;
+      background: rgba(8, 12, 24, 0.96);
+      border-left: 1px solid var(--border);
+      padding: 36px 32px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      transform: translateX(100%);
+      transition: transform 0.4s var(--transition-smooth);
+    }
+
+    #nav-drawer.open .drawer-content {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    .drawer-close {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .drawer-close:hover {
+      background: rgba(255, 75, 75, 0.2);
+      border-color: #ff4b4b;
+      color: #ff4b4b;
+    }
+
+    .drawer-section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .drawer-menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .drawer-menu-list a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-md);
+      color: var(--paper);
+      text-decoration: none;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+
+    .drawer-menu-list a:hover {
+      background: rgba(79, 142, 247, 0.12);
+      border-color: var(--accent);
+      transform: translateX(6px);
+    }
+
+    .drawer-search-box {
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .drawer-search-box input {
+      width: 100%;
+      padding: 14px 44px 14px 18px;
+      background: rgba(14, 22, 44, 0.75);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .drawer-search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(79, 142, 247, 0.35);
+    }
+
+    /* ==========================================================================
+       6. FULL-SCREEN СТИЛИ СЕКЦИЙ И SPLIT-SCREEN АРХИТЕКТУРА
+       ========================================================================== */
+    .fullscreen-section {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      padding: 110px 4vw 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 120px 40px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Двухколоночный Full-Screen сплит */
+    .split-screen-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      align-items: center;
+      min-height: 78vh;
+    }
+
+    .split-screen-grid.reversed {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Прозрачная сцена для 3D модели (НИЧЕГО НЕ ПЕРЕКРЫВАЕТ МОДЕЛЬ) */
+    .stage-3d-slot {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 540px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    /* Декоративные высокотехнологичные маркеры углов 3D-витрины */
+    .stage-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(79, 142, 247, 0.3);
+      pointer-events: none;
+    }
+    .stage-corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .stage-corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .stage-corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .stage-corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    .stage-hud-tag {
+      position: absolute;
+      bottom: 24px;
+      right: 28px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: rgba(79, 142, 247, 0.7);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    /* Эдиториал-панель с контентом */
+    .editorial-content-panel {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 660px;
+    }
+
+    .editorial-content-panel.wide {
+      max-width: 740px;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 7px 18px;
+      background: rgba(79, 142, 247, 0.08);
+      border: 1px solid rgba(79, 142, 247, 0.3);
+      border-radius: var(--radius-full);
+      margin-bottom: 22px;
+      backdrop-filter: blur(12px);
+      align-self: flex-start;
+    }
+
+    .section-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(34px, 4vw, 54px);
+      font-weight: 800;
+      color: var(--paper-bright);
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 28px rgba(2, 4, 12, 0.95), 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .section-title em.cormorant {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 24px rgba(79, 142, 247, 0.6), 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .section-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.6vw, 19px);
+      color: var(--fog2);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 16px rgba(2, 4, 12, 0.95);
+    }
+
+    /* КАРТОЧКА С МНОГОСЛОЙНЫМ GLASSMORPHISM */
+    .glass-card {
+      position: relative;
+      background: var(--glass-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      padding: 36px 32px;
+      box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.75), 0 0 35px -5px rgba(79, 142, 247, 0.1);
+      transition: transform 0.35s var(--transition-smooth), border-color 0.35s ease, box-shadow 0.35s ease;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(79, 142, 247, 0.6), transparent);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(79, 142, 247, 0.4);
+      box-shadow: 0 32px 65px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(79, 142, 247, 0.22);
+    }
+
+    /* Кнопки */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 36px;
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.3s var(--transition-smooth);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #4f8ef7 50%, #a855f7 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 25px rgba(79, 142, 247, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 15px 35px rgba(79, 142, 247, 0.65);
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-outline {
+      background: rgba(10, 18, 36, 0.6);
+      color: #ffffff;
+      border: 1px solid var(--accent);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-outline:hover {
+      background: rgba(79, 142, 247, 0.2);
+      box-shadow: 0 0 25px rgba(79, 142, 247, 0.45);
+      transform: translateY(-3px);
+    }
+
+    /* ==========================================================================
+       7. HERO СЕКЦИЯ (#hero)
+       3D Модель: справа (center-right) | Контент: слева
+       ========================================================================== */
+    #hero {
+      min-height: 100vh;
+    }
+
+    .eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: var(--accent);
+      background: rgba(79, 142, 247, 0.08);
+      border: 1px solid rgba(79, 142, 247, 0.3);
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(14px);
+      margin-bottom: 28px;
+    }
+
+    .eyebrow-badge span.dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent3);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent3);
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(42px, 5.5vw, 76px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+
+    .hero-title .glitch {
+      position: relative;
+      display: inline-block;
+      color: #ffffff;
+    }
+
+    .hero-title .glitch::before,
+    .hero-title .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+
+    .hero-title .glitch::before {
+      color: var(--rust);
+      z-index: -1;
+      transform: translate(-2px, -1px);
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      animation: glitchAnim1 4s infinite linear alternate-reverse;
+    }
+
+    .hero-title .glitch::after {
+      color: var(--accent2);
+      z-index: -2;
+      transform: translate(2px, 1px);
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+      animation: glitchAnim2 3.5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitchAnim1 {
+      0% { clip-path: polygon(0 2%, 100% 2%, 100% 30%, 0 30%); transform: translate(-2px, -1px); }
+      50% { clip-path: polygon(0 40%, 100% 40%, 100% 65%, 0 65%); transform: translate(1px, 2px); }
+      100% { clip-path: polygon(0 75%, 100% 75%, 100% 98%, 0 98%); transform: translate(-1px, 0); }
+    }
+
+    @keyframes glitchAnim2 {
+      0% { clip-path: polygon(0 15%, 100% 15%, 100% 48%, 0 48%); transform: translate(2px, 1px); }
+      50% { clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%); transform: translate(-2px, -1px); }
+      100% { clip-path: polygon(0 0, 100% 0, 100% 25%, 0 25%); transform: translate(1px, 1px); }
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero-descriptor {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--fog2);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 38px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 50px;
+    }
+
+    .hero-shield-decor {
+      position: relative;
+      width: 260px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      animation: shieldFloat 7s ease-in-out infinite alternate;
+    }
+
+    .shield-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 25px rgba(79, 142, 247, 0.45));
+    }
+
+    @keyframes shieldFloat {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(1.5deg); }
+      100% { transform: translateY(8px) rotate(-1.5deg); }
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 24px;
+      left: 4vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .hero-scroll-text {
+      writing-mode: vertical-rl;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(200, 205, 213, 0.6);
+    }
+
+    .hero-scroll-beam {
+      width: 2px;
+      height: 48px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      animation: beamPulse 2.2s infinite;
+    }
+
+    @keyframes beamPulse {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      50.1% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ==========================================================================
+       8. БЕГУЩАЯ СТРОКА (MARQUEE TICKER)
+       ========================================================================== */
+    .marquee-strip {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: rgba(79, 142, 247, 0.035);
+      border-top: 1px solid rgba(79, 142, 247, 0.12);
+      border-bottom: 1px solid rgba(79, 142, 247, 0.12);
+      padding: 16px 0;
+      white-space: nowrap;
+      user-select: none;
+      z-index: 15;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      animation: marqueeScroll 26s linear infinite;
+    }
+
+    .marquee-strip:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(238, 234, 224, 0.85);
+      padding: 0 28px;
+    }
+
+    .marquee-sep {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      margin-left: 28px;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==========================================================================
+       9. СЕКЦИЯ «О ПРОЕКТЕ» (#intro)
+       3D Модель: слева (center-left) | Контент: справа
+       ========================================================================== */
+    .arrow-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .arrow-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 24px;
+      background: rgba(14, 24, 48, 0.7);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(16px);
+      transition: all 0.3s ease;
+    }
+
+    .arrow-list-item:hover {
+      border-color: var(--accent);
+      background: rgba(20, 36, 72, 0.85);
+      transform: translateX(6px);
+    }
+
+    .arrow-list-icon {
+      font-size: 20px;
+      color: var(--accent);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .arrow-list-text {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--paper);
+    }
+
+    /* ==========================================================================
+       10. СЕКЦИЯ «БАЗА ЗНАНИЙ» (#pillars)
+       3D Модель: справа (center-right) | Контент: слева
+       ========================================================================== */
+    .pillars-compact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .pillar-card-compact {
+      padding: 24px 22px;
+      border-radius: var(--radius-md);
+      background: rgba(12, 18, 38, 0.88);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .pillar-card-compact:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(79, 142, 247, 0.2);
+    }
+
+    .pillar-compact-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pillar-compact-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      padding: 3px 10px;
+      background: rgba(79, 142, 247, 0.1);
+      border: 1px solid rgba(79, 142, 247, 0.25);
+      border-radius: var(--radius-full);
+    }
+
+    .pillar-compact-num {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pillar-compact-title {
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .pillar-compact-desc {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--fog2);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       11. СЕКЦИЯ «ПРЕДМЕТЫ (ОГП)» (#topics)
+       3D Модель: слева (center-left) | Контент: справа
+       ========================================================================== */
+    .featured-subject-box {
+      background: var(--glass-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .badge-subject-code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0284c7, #4f8ef7);
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+    }
+
+    .grade-tabs {
+      display: flex;
+      gap: 12px;
+      margin: 22px 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    .grade-tab-btn {
+      padding: 9px 22px;
+      font-family: var(--font-head);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--fog);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .grade-tab-btn:hover {
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .grade-tab-btn.active {
+      background: linear-gradient(135deg, rgba(79, 142, 247, 0.35), rgba(168, 85, 247, 0.35));
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(79, 142, 247, 0.4);
+    }
+
+    .grade-content-panel {
+      display: none;
+    }
+    .grade-content-panel.active {
+      display: block;
+      animation: fadeInPanel 0.4s ease forwards;
+    }
+
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chapters-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .chapter-card {
+      background: rgba(12, 18, 36, 0.85);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+      transition: border-color 0.25s ease;
+    }
+
+    .chapter-card.open {
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .chapter-trigger {
+      width: 100%;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .chapter-trigger:hover {
+      background: rgba(79, 142, 247, 0.08);
+    }
+
+    .chapter-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chapter-idx {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 3px 8px;
+      background: rgba(79, 142, 247, 0.12);
+      border-radius: 6px;
+    }
+
+    .chapter-toggle-icon {
+      font-size: 18px;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .chapter-card.open .chapter-toggle-icon {
+      transform: rotate(45deg);
+    }
+
+    .chapter-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--transition-smooth);
+      background: rgba(8, 12, 26, 0.7);
+      border-top: 1px solid transparent;
+    }
+
+    .chapter-card.open .chapter-body {
+      border-top-color: var(--border2);
+    }
+
+    .sections-list {
+      padding: 16px 20px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .section-item:hover {
+      background: rgba(79, 142, 247, 0.08);
+      border-color: rgba(79, 142, 247, 0.3);
+      transform: translateX(4px);
+    }
+
+    .section-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--paper);
+    }
+
+    .section-item-left span.bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent3);
+    }
+
+    .section-item-action {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .section-item-action:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       12. СЕКЦИЯ «КОНСТИТУЦИЯ РУЗ» (#constitution)
+       3D Модель: слева (center-left) | Контент: справа
+       ========================================================================== */
+    .const-hub-box {
+      background: var(--glass-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8);
+    }
+
+    .const-search-bar {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .const-search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .const-search-icon {
+      position: absolute;
+      left: 18px;
+      color: var(--accent);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    #const-search-input {
+      width: 100%;
+      padding: 16px 48px 16px 50px;
+      background: rgba(14, 22, 46, 0.85);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      outline: none;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    #const-search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 22px rgba(79, 142, 247, 0.45);
+    }
+
+    .const-search-clear {
+      position: absolute;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      border-radius: 50%;
+      color: #ffffff;
+      font-size: 15px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .const-search-clear:hover {
+      background: rgba(255, 75, 75, 0.3);
+      color: #ff4b4b;
+    }
+
+    .search-status-bar {
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fog);
+    }
+
+    .const-chapters-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 460px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .chapter-card-const {
+      padding: 24px;
+      background: rgba(10, 16, 34, 0.75);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-md);
+      transition: all 0.25s ease;
+    }
+
+    .chapter-card-const:hover {
+      border-color: var(--accent);
+      background: rgba(14, 22, 46, 0.9);
+    }
+
+    .const-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .const-chapter-roman {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      padding: 3px 10px;
+      background: rgba(79, 142, 247, 0.1);
+      border: 1px solid rgba(79, 142, 247, 0.25);
+      border-radius: var(--radius-full);
+    }
+
+    .const-chapter-num {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .const-chapter-title {
+      font-family: var(--font-head);
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .const-chapter-desc {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--fog2);
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .articles-pill-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .article-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--paper);
+      padding: 5px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .article-pill:hover {
+      background: rgba(79, 142, 247, 0.25);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .const-empty-state {
+      display: none;
+      text-align: center;
+      padding: 36px 20px;
+      background: rgba(14, 22, 44, 0.7);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-head);
+      font-size: 14px;
+      color: var(--fog2);
+    }
+    .const-empty-state.visible {
+      display: block;
+    }
+
+    /* ==========================================================================
+       13. СЕКЦИЯ «FAQ» (#faq)
+       3D Модель: справа (center-right) | Контент: слева
+       ========================================================================== */
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .faq-item {
+      background: var(--glass-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item.open {
+      border-color: var(--accent);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(79, 142, 247, 0.05);
+    }
+
+    .faq-icon {
+      font-size: 20px;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--transition-smooth);
+      background: rgba(8, 12, 24, 0.5);
+    }
+
+    .faq-answer-inner {
+      padding: 0 24px 22px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--fog2);
+      line-height: 1.75;
+      border-top: 1px solid transparent;
+    }
+
+    .faq-item.open .faq-answer-inner {
+      border-top-color: var(--border2);
+    }
+
+    /* ==========================================================================
+       14. ПОДВАЛ С САЙТОМ (FOOTER)
+       ========================================================================== */
+    #footer {
+      position: relative;
+      background: #020306;
+      border-top: 1px solid var(--border2);
+      padding: 90px 4vw 40px;
+      z-index: 10;
+      box-shadow: inset 0 60px 100px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1.1fr 1.3fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .footer-brand-title {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .footer-brand-desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fog);
+      line-height: 1.7;
+      max-width: 320px;
+    }
+
+    .footer-social-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--paper);
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.25s ease;
+    }
+
+    .social-btn:hover {
+      background: rgba(79, 142, 247, 0.2);
+      border-color: var(--accent);
+      color: #ffffff;
+      transform: translateY(-3px);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links-list a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fog2);
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+
+    .footer-links-list a:hover {
+      color: #ffffff;
+      transform: translateX(4px);
+    }
+
+    .footer-contact-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .footer-email-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: rgba(14, 22, 44, 0.7);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+    }
+
+    .footer-email-link:hover {
+      background: rgba(79, 142, 247, 0.2);
+      border-color: var(--accent);
+    }
+
+    .footer-bottom-bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--fog);
+    }
+
+    .footer-credits strong {
+      color: var(--paper);
+    }
+
+    /* ==========================================================================
+       15. ПЛАВАЮЩИЙ CRM ВИДЖЕТ ТЕХПОДДЕРЖКИ (#float-widget)
+       ========================================================================== */
+    #float-widget {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9990;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 14px;
+    }
+
+    .crm-pulse-btn {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(14, 165, 233, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .crm-pulse-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 14px 38px rgba(14, 165, 233, 0.7);
+    }
+
+    .crm-pulse-waves {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(14, 165, 233, 0.6);
+      animation: crmWave 2.4s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes crmWave {
+      0% { transform: scale(0.95); opacity: 1; }
+      100% { transform: scale(1.45); opacity: 0; }
+    }
+
+    .crm-popup-card {
+      position: relative;
+      width: 320px;
+      background: rgba(10, 16, 32, 0.94);
+      border: 1px solid rgba(79, 142, 247, 0.3);
+      border-radius: 20px;
+      backdrop-filter: blur(24px);
+      padding: 24px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(79, 142, 247, 0.15);
+      display: none;
+      animation: popupSlideUp 0.3s ease forwards;
+    }
+
+    .crm-popup-card.open {
+      display: block;
+    }
+
+    @keyframes popupSlideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .crm-popup-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .crm-popup-title {
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .crm-popup-close {
+      background: transparent;
+      border: none;
+      color: var(--fog);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .crm-popup-close:hover {
+      color: #ffffff;
+    }
+
+    .crm-popup-text {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--fog2);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .crm-popup-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      border: none;
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: var(--font-head);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       16. МОДАЛЬНЫЕ ОКНА
+       ========================================================================== */
+    .app-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10050;
+      background: rgba(2, 4, 10, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .app-modal.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      position: relative;
+      width: min(92vw, 680px);
+      max-height: 85vh;
+      background: rgba(10, 16, 36, 0.98);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(28px);
+      padding: 40px 36px;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(79, 142, 247, 0.2);
+      transform: scale(0.95);
+      transition: transform 0.35s var(--transition-smooth);
+    }
+
+    .app-modal.open .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 75, 75, 0.2);
+      border-color: #ff4b4b;
+      color: #ff4b4b;
+    }
+
+    .modal-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .modal-title {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      line-height: 1.35;
+    }
+
+    .modal-body-content {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--fog2);
+      line-height: 1.8;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-actions-row {
+      margin-top: 28px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .contact-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .contact-form-group label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .contact-form-group input,
+    .contact-form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(14, 22, 44, 0.7);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .contact-form-group input:focus,
+    .contact-form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(79, 142, 247, 0.3);
+    }
+
+    /* ==========================================================================
+       17. АДАПТИВНОСТЬ (MEDIA QUERIES)
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .split-screen-grid,
+      .split-screen-grid.reversed {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .editorial-content-panel {
+        max-width: 100%;
+      }
+      .stage-3d-slot {
+        min-height: 380px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links-desktop,
+      .nav-cta-btn {
+        display: none;
+      }
+      .nav-burger {
+        display: flex;
+      }
+      .fullscreen-section {
+        padding: 90px 4vw 60px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .pillars-compact-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-scroll-indicator {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="preloader-active">
+
+  <!-- Кинематографическая виньетка (глубокие тени по углам) -->
+  <div class="cinematic-vignette" aria-hidden="true"></div>
+  <div class="crt-scanlines" aria-hidden="true"></div>
+  <div class="tech-grid-bg" aria-hidden="true"></div>
+
+  <!-- Единый мастер-холст для 3D WebGL сцен -->
+  <canvas id="threejs-master-canvas"></canvas>
+
+  <!-- Интерактивный прелоадер (0–100%) -->
+  <div id="preloader" role="dialog" aria-label="Загрузка платформы">
+    <div class="pre-card">
+      <div class="pre-logo-wrap">
+        <div class="pre-logo-glow"></div>
+        <img src="logo-site-cp.png" alt="Логотип Фундамент Знаний" class="pre-logo-img">
+      </div>
+      <div class="pre-status-label" id="pre-status-text">ИНИЦИАЛИЗАЦИЯ 3D СЦЕН</div>
+      <div class="pre-counter" id="pre-counter-value">0%</div>
+      <div class="pre-bar-track">
+        <div class="pre-bar-fill" id="pre-bar-fill"></div>
+      </div>
+      <div class="pre-tagline">ФУНДАМЕНТ ЗНАНИЙ · 2026</div>
+    </div>
+  </div>
+
+  <!-- Верхняя фиксированная панель (Header) -->
+  <header id="main-nav">
+    <div class="nav-container">
+      <a href="#hero" class="brand-link" aria-label="На главную">
+        <div class="brand-icon-box">
+          <img src="logo-site-cp.png" alt="Фундамент Знаний">
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">ФУНДАМЕНТ</span>
+          <span class="brand-subtitle">ЗНАНИЙ</span>
+        </div>
+      </a>
+
+      <nav aria-label="Основная навигация">
+        <ul class="nav-links-desktop">
+          <li><a href="#hero">Главная</a></li>
+          <li><a href="#intro">О проекте</a></li>
+          <li><a href="#pillars">База знаний</a></li>
+          <li><a href="#topics">Предметы</a></li>
+          <li><a href="#constitution">Конституция</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#footer">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="#constitution" class="nav-cta-btn">Конституция РУз</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Открыть мобильное меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Выдвижное меню (Drawer) -->
+  <div id="nav-drawer" role="dialog" aria-modal="true" aria-label="Меню навигации">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <div class="brand-text">
+          <span class="brand-title">ФУНДАМЕНТ ЗНАНИЙ</span>
+          <span class="brand-subtitle">НАВИГАЦИЯ</span>
+        </div>
+        <button class="drawer-close" id="drawer-close-btn" aria-label="Закрыть меню">✕</button>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Страницы</div>
+        <ul class="drawer-menu-list">
+          <li><a href="#hero" class="drawer-nav-link"><span>🏠</span> Главная</a></li>
+          <li><a href="#intro" class="drawer-nav-link"><span>📖</span> О проекте</a></li>
+          <li><a href="#pillars" class="drawer-nav-link"><span>💎</span> База знаний</a></li>
+          <li><a href="#topics" class="drawer-nav-link"><span>🛡️</span> Предметы (ОГП)</a></li>
+          <li><a href="#constitution" class="drawer-nav-link"><span>⚖️</span> Конституция РУз</a></li>
+          <li><a href="#faq" class="drawer-nav-link"><span>❓</span> Вопросы и ответы</a></li>
+          <li><a href="javascript:void(0)" id="drawer-agreement-link" class="drawer-nav-link"><span>📜</span> Пользовательское соглашение</a></li>
+          <li><a href="javascript:void(0)" id="drawer-contact-link" class="drawer-nav-link"><span>✉️</span> Написать нам</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="drawer-section-title">Конституция РУз · Поиск</div>
+        <div class="drawer-search-box">
+          <input type="text" id="drawer-const-input" placeholder="Номер статьи или ключевое слово…">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ В СТИЛЕ FULL-SCREEN SPLIT -->
+  <div class="page-wrapper">
+
+    <!-- ======================================================================
+         1. СЕКЦИЯ HERO (#hero)
+         Слева: Контент | Справа: 3D Монумент Знаний
+         ====================================================================== -->
+    <section id="hero" data-scene="hero" class="fullscreen-section hero-section">
+      <div class="split-screen-grid">
+        <!-- Левая колонка: Эдиториал-контент -->
+        <div class="editorial-content-panel">
+          <div class="eyebrow-badge">
+            <span class="dot"></span>
+            УЗБЕКИСТАН · 2026
+          </div>
+          <h1 class="hero-title">
+            <span class="glitch" data-text="Фундамент">Фундамент</span><br>
+            <span class="accent">Знаний</span>
+          </h1>
+          <p class="hero-descriptor">
+            Фундамент Знаний — Здесь вы сможете найти полезную информацию об статьях, знания из книг и многое другое.
+          </p>
+          <div class="hero-actions">
+            <a href="#topics" class="btn btn-primary">
+              Начать изучение →
+            </a>
+            <a href="#constitution" class="btn btn-outline">
+              Конституция РУз
+            </a>
+          </div>
+        </div>
+
+        <!-- Правая колонка: Прозрачная 3D Витрина Монумента -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // MONUMENT OF KNOWLEDGE</span>
+
+          <!-- Парящий векторный щит поверх сцены -->
+          <div class="hero-shield-decor">
+            <svg class="shield-svg" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 10L20 40V110C20 160 60 200 100 220C140 200 180 160 180 110V40L100 10Z" stroke="url(#shieldGrad1)" stroke-width="2.5" fill="rgba(79, 142, 247, 0.05)" />
+              <path d="M100 30L36 55V110C36 150 68 185 100 203C132 185 164 150 164 110V55L100 30Z" stroke="url(#shieldGrad2)" stroke-width="1.5" fill="none" opacity="0.6" />
+              <circle cx="100" cy="115" r="28" stroke="rgba(223, 177, 91, 0.8)" stroke-width="1.5" fill="rgba(223, 177, 91, 0.06)" />
+              <path d="M100 95L104 110H120L107 119L112 134L100 125L88 134L93 119L80 110H96L100 95Z" fill="#dfb15b" opacity="0.9" />
+              <defs>
+                <linearGradient id="shieldGrad1" x1="20" y1="10" x2="180" y2="220" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#4f8ef7" />
+                  <stop offset="0.5" stop-color="#a855f7" />
+                  <stop offset="1" stop-color="#dfb15b" />
+                </linearGradient>
+                <linearGradient id="shieldGrad2" x1="36" y1="30" x2="164" y2="203" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#ffffff" />
+                  <stop offset="1" stop-color="#4f8ef7" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator">
+        <span class="hero-scroll-text">Фундамент Знаний</span>
+        <div class="hero-scroll-beam"></div>
+      </div>
+    </section>
+
+    <!-- Бегущая строка -->
+    <div class="marquee-strip" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item">Фундамент Знаний <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Узбекистан <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Конституция РУз <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Статьи РУз <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Политика <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Открытые Источники <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Фундамент Знаний <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Узбекистан <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Конституция РУз <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Статьи РУз <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Политика <span class="marquee-sep"></span></span>
+        <span class="marquee-item">Открытые Источники <span class="marquee-sep"></span></span>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         2. СЕКЦИЯ «О ПРОЕКТЕ» (#intro)
+         Слева: 3D Фолиант Мудрости | Справа: Контент
+         ====================================================================== -->
+    <section id="intro" data-scene="intro" class="fullscreen-section intro-section">
+      <div class="split-screen-grid reversed">
+        <!-- Левая колонка: Прозрачная 3D Витрина Книги Мудрости -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // FOLIANT OF WISDOM</span>
+        </div>
+
+        <!-- Правая колонка: Эдиториал-панель -->
+        <div class="editorial-content-panel">
+          <div class="glass-card">
+            <div class="section-badge">О ПРОЕКТЕ</div>
+            <h2 class="section-title">
+              Фундамент — <br>
+              <em class="cormorant">Знаний</em>
+            </h2>
+            <p class="section-subtitle" style="margin-bottom: 20px;">
+              Добро пожаловать на «Фундамент Знаний»! На нашем сайте мы собрали всё самое необходимое для интеллектуального развития. Здесь вас ждут:
+            </p>
+            <ul class="arrow-list">
+              <li class="arrow-list-item">
+                <span class="arrow-list-icon">→</span>
+                <span class="arrow-list-text">Познавательные статьи и авторские материалы.</span>
+              </li>
+              <li class="arrow-list-item">
+                <span class="arrow-list-icon">→</span>
+                <span class="arrow-list-text">Практические советы и прикладные лайфхаки на каждый день.</span>
+              </li>
+            </ul>
+            <div style="margin-top: 28px; display: flex; align-items: center; gap: 16px;">
+              <img src="logo-site.png" alt="Логотип" style="height: 38px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(79,142,247,0.4));">
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 2px;">ОБРАЗОВАТЕЛЬНАЯ ЭКОСИСТЕМА РЕСПУБЛИКИ УЗБЕКИСТАН</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         3. СЕКЦИЯ «БАЗА ЗНАНИЙ» (#pillars)
+         Слева: Контент (4 карточки) | Справа: 3D Кристалл и 4 Сферы
+         ====================================================================== -->
+    <section id="pillars" data-scene="pillars" class="fullscreen-section knowledge-section">
+      <div class="split-screen-grid">
+        <!-- Левая колонка: Контент и 4 компактные карточки -->
+        <div class="editorial-content-panel wide">
+          <div class="section-badge">БАЗА ЗНАНИЙ</div>
+          <h2 class="section-title">
+            Фундамент <br>
+            <em class="cormorant">вашего развития</em>
+          </h2>
+          <p class="section-subtitle">
+            Четыре фундаментальные опоры непрерывного самосовершенствования.
+          </p>
+
+          <div class="pillars-compact-grid">
+            <div class="pillar-card-compact">
+              <div class="pillar-compact-head">
+                <span class="pillar-compact-tag">Статьи</span>
+                <span class="pillar-compact-num">01</span>
+              </div>
+              <h3 class="pillar-compact-title">Полезные материалы</h3>
+              <p class="pillar-compact-desc">
+                Авторские структурированные публикации на самые актуальные темы для постоянного расширения кругозора.
+              </p>
+            </div>
+
+            <div class="pillar-card-compact">
+              <div class="pillar-compact-head">
+                <span class="pillar-compact-tag">Литература</span>
+                <span class="pillar-compact-num">02</span>
+              </div>
+              <h3 class="pillar-compact-title">Знания из книг</h3>
+              <p class="pillar-compact-desc">
+                Квинтэссенция ключевых мыслей и концепций из мировых бестселлеров по саморазвитию и лидерству.
+              </p>
+            </div>
+
+            <div class="pillar-card-compact">
+              <div class="pillar-compact-head">
+                <span class="pillar-compact-tag">Практика</span>
+                <span class="pillar-compact-num">03</span>
+              </div>
+              <h3 class="pillar-compact-title">Прикладной опыт</h3>
+              <p class="pillar-compact-desc">
+                Рабочие методики, тренировка критического мышления и проверенные инструменты достижения целей.
+              </p>
+            </div>
+
+            <div class="pillar-card-compact">
+              <div class="pillar-compact-head">
+                <span class="pillar-compact-tag">Миссия сайта</span>
+                <span class="pillar-compact-num">04</span>
+              </div>
+              <h3 class="pillar-compact-title">Надёжная основа</h3>
+              <p class="pillar-compact-desc">
+                Современная цифровая платформа для тех, кто стремится к интеллектуальному росту каждый день.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая колонка: Прозрачная 3D Витрина Кристалла -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // CRYSTAL & 4 SPHERES</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. СЕКЦИЯ «ПРЕДМЕТЫ (ОГП)» (#topics)
+         Слева: 3D Геральдический Щит | Справа: Учебная программа (7-9 класс)
+         ====================================================================== -->
+    <section id="topics" data-scene="topics" class="fullscreen-section">
+      <div class="split-screen-grid reversed">
+        <!-- Левая колонка: Прозрачная 3D Витрина Щита -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // HERALDIC SHIELD & WREATH</span>
+        </div>
+
+        <!-- Правая колонка: Интерактивный учебный план -->
+        <div class="editorial-content-panel wide">
+          <div class="featured-subject-box">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+              <span class="badge-subject-code">01 · ОГП</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 2px;">ОФИЦИАЛЬНАЯ ПРОГРАММА</span>
+            </div>
+            <h3 style="font-family: var(--font-head); font-size: 22px; font-weight: 700; color: #ffffff; line-height: 1.35; margin-bottom: 12px;">
+              Основы государственной политики (ОГП)
+            </h3>
+            <p style="font-size: 14px; color: var(--fog2); margin-bottom: 16px;">
+              Предмет, формирующий гражданскую компетентность, правосознание и патриотизм.
+            </p>
+
+            <div class="grade-tabs">
+              <button class="grade-tab-btn active" data-grade="7">7 КЛАСС</button>
+              <button class="grade-tab-btn" data-grade="8">8 КЛАСС</button>
+              <button class="grade-tab-btn" data-grade="9">9 КЛАСС</button>
+            </div>
+
+            <!-- 7 КЛАСС -->
+            <div class="grade-content-panel active" id="grade-panel-7">
+              <div class="chapters-accordion">
+                <div class="chapter-card open">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 1</span>
+                      <span>Введение в общество и правила поведения</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body" style="max-height: 200px;">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Социальные нормы и правила в обществе</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.1.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Дисциплина, порядок и закон</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.1.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 2</span>
+                      <span>Права ребенка</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Конвенция ООН о правах ребенка</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.2.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Государственные гарантии защиты прав детей</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.2.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 3</span>
+                      <span>Государственная символика</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Уважение к флагу, гербу и гимну</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.3.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Национальные ценности и патриотизм</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="7.3.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 8 КЛАСС -->
+            <div class="grade-content-panel" id="grade-panel-8">
+              <div class="chapters-accordion">
+                <div class="chapter-card open">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 1</span>
+                      <span>Конституция — Основной закон</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body" style="max-height: 200px;">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Понятие Конституции и её значение</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.1.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Основы конституционного строя</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.1.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 2</span>
+                      <span>Права и свободы человека</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Личные права и свободы</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.2.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Политические, экономические и социальные права</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.2.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 3</span>
+                      <span>Государственное устройство Узбекистана</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Органы государственной власти</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.3.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Местное самоуправление (махалля)</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="8.3.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 9 КЛАСС -->
+            <div class="grade-content-panel" id="grade-panel-9">
+              <div class="chapters-accordion">
+                <div class="chapter-card open">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 1</span>
+                      <span>Международное право и права человека</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body" style="max-height: 200px;">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Понятие и принципы международного права</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.1.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Международная защита прав человека</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.1.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 2</span>
+                      <span>Избирательное право и партии</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Избирательное право в Узбекистане</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.2.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Избирательный процесс и партии</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.2.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="chapter-card">
+                  <button class="chapter-trigger" type="button">
+                    <div class="chapter-title-wrap">
+                      <span class="chapter-idx">Глава 3</span>
+                      <span>Гражданское общество и государство</span>
+                    </div>
+                    <span class="chapter-toggle-icon">+</span>
+                  </button>
+                  <div class="chapter-body">
+                    <ul class="sections-list">
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Понятие гражданского общества</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.3.1">Смотреть тему →</a>
+                      </li>
+                      <li class="section-item">
+                        <div class="section-item-left">
+                          <span class="bullet"></span>
+                          <span>Институты гражданского общества</span>
+                        </div>
+                        <a href="javascript:void(0)" class="section-item-action" data-topic="9.3.2">Смотреть тему →</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. СЕКЦИЯ «КОНСТИТУЦИЯ РУЗ» (#constitution)
+         Слева: 3D Весы Правосудия | Справа: Живой Поиск и Статьи 1–21
+         ====================================================================== -->
+    <section id="constitution" data-scene="constitution" class="fullscreen-section">
+      <div class="split-screen-grid reversed">
+        <!-- Левая колонка: Прозрачная 3D Витрина Весов Правосудия -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // SCALES OF JUSTICE & TABLETS</span>
+        </div>
+
+        <!-- Правая колонка: Интерактивный Конституционный Хаб -->
+        <div class="editorial-content-panel wide">
+          <div class="const-hub-box">
+            <div class="section-badge">КОНСТИТУЦИЯ РУЗ</div>
+            <h2 class="section-title" style="font-size: clamp(28px, 3vw, 42px); margin-bottom: 12px;">
+              Конституция <br>
+              <em class="cormorant">Республики Узбекистан</em>
+            </h2>
+            <p class="section-subtitle" style="margin-bottom: 20px; font-size: 15px;">
+              Интерактивный каталог и живой поиск статей Конституции — основного закона страны.
+            </p>
+
+            <div class="const-search-bar">
+              <div class="const-search-input-wrap">
+                <span class="const-search-icon">🔍</span>
+                <input type="text" id="const-search-input" placeholder="Поиск по Главам и Статьям (например: суверенитет, 15, права)...">
+                <button class="const-search-clear" id="const-search-clear" aria-label="Очистить поиск">✕</button>
+              </div>
+              <div class="search-status-bar" id="search-status-bar">
+                <span>5 Глав · 21 Статья доступна для чтения</span>
+              </div>
+            </div>
+
+            <div class="const-chapters-scroll" id="const-chapters-grid">
+              <!-- Глава I -->
+              <div class="chapter-card-const" data-chapter="1" data-search-text="глава 1 государственный суверенитет статьи 1 2 3 4 5 6 язык флаг герб гимн столица ташкент">
+                <div class="const-card-header">
+                  <span class="const-chapter-roman">ГЛАВА I</span>
+                  <span class="const-chapter-num">01</span>
+                </div>
+                <h3 class="const-chapter-title">Государственный суверенитет</h3>
+                <p class="const-chapter-desc">Статьи 1–6. Суверенитет, устройство государства, язык, символы и столица.</p>
+                <div class="articles-pill-cloud">
+                  <button class="article-pill" data-art="1">Статья 1</button>
+                  <button class="article-pill" data-art="2">Статья 2</button>
+                  <button class="article-pill" data-art="3">Статья 3</button>
+                  <button class="article-pill" data-art="4">Статья 4</button>
+                  <button class="article-pill" data-art="5">Статья 5</button>
+                  <button class="article-pill" data-art="6">Статья 6</button>
+                </div>
+              </div>
+
+              <!-- Глава II -->
+              <div class="chapter-card-const" data-chapter="2" data-search-text="глава 2 народовластие статьи 7 8 9 10 11 12 13 14 народ власть референдум олий мажлис президент разделение властей">
+                <div class="const-card-header">
+                  <span class="const-chapter-roman">ГЛАВА II</span>
+                  <span class="const-chapter-num">02</span>
+                </div>
+                <h3 class="const-chapter-title">Народовластие</h3>
+                <p class="const-chapter-desc">Статьи 7–14. Народ как источник власти, представительство, референдум, разделение властей.</p>
+                <div class="articles-pill-cloud">
+                  <button class="article-pill" data-art="7">Статья 7</button>
+                  <button class="article-pill" data-art="8">Статья 8</button>
+                  <button class="article-pill" data-art="9">Статья 9</button>
+                  <button class="article-pill" data-art="10">Статья 10</button>
+                  <button class="article-pill" data-art="11">Статья 11</button>
+                  <button class="article-pill" data-art="12">Статья 12</button>
+                  <button class="article-pill" data-art="13">Статья 13</button>
+                  <button class="article-pill" data-art="14">Статья 14</button>
+                </div>
+              </div>
+
+              <!-- Глава III -->
+              <div class="chapter-card-const" data-chapter="3" data-search-text="глава 3 верховенство конституции и закона статьи 15 16 высшая юридическая сила прямое действие">
+                <div class="const-card-header">
+                  <span class="const-chapter-roman">ГЛАВА III</span>
+                  <span class="const-chapter-num">03</span>
+                </div>
+                <h3 class="const-chapter-title">Верховенство Конституции и закона</h3>
+                <p class="const-chapter-desc">Статьи 15–16. Верховенство Конституции, высшая юридическая сила и прямое действие.</p>
+                <div class="articles-pill-cloud">
+                  <button class="article-pill" data-art="15">Статья 15</button>
+                  <button class="article-pill" data-art="16">Статья 16</button>
+                </div>
+              </div>
+
+              <!-- Глава IV -->
+              <div class="chapter-card-const" data-chapter="4" data-search-text="глава 4 внешняя политика статьи 17 18 международные отношения миролюбие границы невмешательство">
+                <div class="const-card-header">
+                  <span class="const-chapter-roman">ГЛАВА IV</span>
+                  <span class="const-chapter-num">04</span>
+                </div>
+                <h3 class="const-chapter-title">Внешняя политика</h3>
+                <p class="const-chapter-desc">Статьи 17–18. Принципы международных отношений, миролюбие и сотрудничество.</p>
+                <div class="articles-pill-cloud">
+                  <button class="article-pill" data-art="17">Статья 17</button>
+                  <button class="article-pill" data-art="18">Статья 18</button>
+                </div>
+              </div>
+
+              <!-- Глава V -->
+              <div class="chapter-card-const" data-chapter="5" data-search-text="глава 5 общие положения права свободы и обязанности статьи 19 20 21 равенство гарантия суд личность соразмерность">
+                <div class="const-card-header">
+                  <span class="const-chapter-roman">ГЛАВА V</span>
+                  <span class="const-chapter-num">05</span>
+                </div>
+                <h3 class="const-chapter-title">Общие положения (Права, свободы, обязанности)</h3>
+                <p class="const-chapter-desc">Статьи 19–21. Признание и гарантия прав человека, равенство, взаимная ответственность.</p>
+                <div class="articles-pill-cloud">
+                  <button class="article-pill" data-art="19">Статья 19</button>
+                  <button class="article-pill" data-art="20">Статья 20</button>
+                  <button class="article-pill" data-art="21">Статья 21</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="const-empty-state" id="const-empty-state">
+              Ничего не найдено. Попробуйте изменить поисковый запрос (например: «суверенитет», «15», «права»).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         6. СЕКЦИЯ «FAQ» (#faq)
+         Слева: Контент (Аккордеон) | Справа: 3D Гироскоп Познания
+         ====================================================================== -->
+    <section id="faq" data-scene="faq" class="fullscreen-section">
+      <div class="split-screen-grid">
+        <!-- Левая колонка: Аккордеон FAQ -->
+        <div class="editorial-content-panel wide">
+          <div class="section-badge">FAQ</div>
+          <h2 class="section-title">
+            Ответы <br>
+            <em class="cormorant">на вопросы</em>
+          </h2>
+          <p class="section-subtitle">
+            Ответы на ключевые вопросы о платформе и методических материалах.
+          </p>
+
+          <div class="faq-accordion">
+            <div class="faq-item open">
+              <button class="faq-question" type="button">
+                <span>Для чего предназначен этот сайт?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer" style="max-height: 200px;">
+                <div class="faq-answer-inner">
+                  Наш сайт является официальной образовательной платформой учебного центра «Fundament Znaniy». Здесь вы можете ознакомиться с учебными предметами, прочитать статьи, изучить Конституцию Республики Узбекистан и получить доступ к учебным материалам.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Как найти нужные учебные материалы на сайте?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Все материалы структурированы по иерархии: «Предметы» → «Классы» → «Главы» → «Разделы». Вы можете выбрать интересующий вас предмет на главной странице и по шагам перейти к конкретному уроку или лекции.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Обязательно ли регистрироваться для просмотра материалов?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Большая часть информационных материалов и разделов Конституции доступна для чтения всем посетителям сайта без регистрации. Личный кабинет и специфические функции предназначены для администраторов.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" type="button">
+                <span>Где я могу ознакомиться с юридическими условиями использования сайта?</span>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  В самом низу сайта (в футере) расположена ссылка на «Пользовательское соглашение». Там подробно описаны правила использования материалов сайта, правила конфиденциальности и условия авторского права.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая колонка: Прозрачная 3D Витрина Гироскопа -->
+        <div class="stage-3d-slot">
+          <div class="stage-corner stage-corner-tl"></div>
+          <div class="stage-corner stage-corner-tr"></div>
+          <div class="stage-corner stage-corner-bl"></div>
+          <div class="stage-corner stage-corner-br"></div>
+          <span class="stage-hud-tag">3D // GYROSCOPE ENIGMA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         7. ПОДВАЛ (FOOTER)
+         3D Модель: Панорамный Космический Горизонт
+         ====================================================================== -->
+    <footer id="footer" data-scene="footer">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="logo-site-cp.png" alt="Логотип" style="width: 44px; height: 44px; object-fit: contain;">
+            <div>
+              <div class="footer-brand-title">FUNDAMENT ZNANIY</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent);">ОБРАЗОВАТЕЛЬНЫЙ ПОРТАЛ</div>
+            </div>
+          </div>
+          <p class="footer-brand-desc">
+            Образовательный сайт по познавательному контенту и Конституции Республики Узбекистан.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">✈</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">📸</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="YouTube">▶</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook">f</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Страницы</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero">Главная</a></li>
+            <li><a href="javascript:void(0)" id="footer-agreement-link">Пользовательское соглашение</a></li>
+            <li><a href="javascript:void(0)" id="footer-contact-link">Контактная форма</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Обучение</div>
+          <ul class="footer-links-list">
+            <li><a href="#topics">ОГП (Основы гос. политики)</a></li>
+            <li><a href="#constitution">Конституция РУз</a></li>
+            <li><a href="#pillars">База знаний и статьи</a></li>
+            <li><a href="#faq">Вопросы и ответы</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Контакты</div>
+          <div class="footer-contact-box">
+            <a href="mailto:malivochkiru@gmail.com" class="footer-email-link" id="footer-copy-email-btn">
+              <span>✉️</span>
+              <span>malivochkiru@gmail.com</span>
+            </a>
+            <p style="font-family: var(--font-body); font-size: 13px; color: var(--fog);">
+              По вопросам сотрудничества, методических материалов и работы портала.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 Fundament Znaniy. Все права защищены.</div>
+        <div class="footer-credits">
+          <span>Куратор: <strong>Алмаз Зафарович</strong></span> &nbsp;·&nbsp; 
+          <span>Разработчик: <strong>Убайдуллаев Дильшод</strong></span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /.page-wrapper -->
+
+  <!-- Плавающий CRM виджет поддержки -->
+  <div id="float-widget">
+    <div class="crm-popup-card" id="crm-popup-card">
+      <div class="crm-popup-head">
+        <span class="crm-popup-title"><span>💬</span> Техподдержка</span>
+        <button class="crm-popup-close" id="crm-popup-close" aria-label="Закрыть">✕</button>
+      </div>
+      <p class="crm-popup-text">
+        Нашли ошибку или недочет в работе сайта? Пожалуйста, напишите нам, и мы оперативно решим вопрос.
+      </p>
+      <button class="crm-popup-btn" id="crm-popup-action-btn">
+        Написать в поддержку
+      </button>
+    </div>
+
+    <button class="crm-pulse-btn" id="crm-pulse-btn" aria-label="Открыть окно техподдержки">
+      <div class="crm-pulse-waves"></div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Модальное окно статьи Конституции -->
+  <div class="app-modal" id="modal-article" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" data-close-modal>✕</button>
+      <span class="modal-badge" id="modal-article-badge">КОНСТИТУЦИЯ РУЗ</span>
+      <h3 class="modal-title" id="modal-article-title">Статья</h3>
+      <div class="modal-body-content" id="modal-article-body"></div>
+      <div class="modal-actions-row">
+        <button class="btn btn-outline" id="modal-copy-article-btn" style="padding: 10px 24px;">Скопировать текст</button>
+        <button class="btn btn-primary" data-close-modal style="padding: 10px 24px;">Понятно</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно соглашения -->
+  <div class="app-modal" id="modal-agreement" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" data-close-modal>✕</button>
+      <span class="modal-badge">ПРАВОВАЯ ИНФОРМАЦИЯ</span>
+      <h3 class="modal-title">Пользовательское соглашение</h3>
+      <div class="modal-body-content">
+        <p><strong>1. Общие положения</strong><br>
+        Настоящее Пользовательское соглашение регулирует порядок использования материалов и сервисов образовательного портала «Фундамент Знаний» (fundament-znaniy.uz).</p>
+        <p><strong>2. Интеллектуальная собственность</strong><br>
+        Все учебные материалы, тексты, дизайн и программные компоненты 3D-графики являются объектами авторского права. Использование материалов допускается исключительно в личных и некоммерческих образовательных целях со ссылкой на первоисточник.</p>
+        <p><strong>3. Официальные источники</strong><br>
+        Тексты Конституции Республики Узбекистан приведены в действующей редакции и предназначены для просветительских и ознакомительных целей.</p>
+        <p><strong>4. Ответственность и контакты</strong><br>
+        Куратор образовательного направления: <strong>Алмаз Зафарович</strong>.<br>
+        Разработчик платформы: <strong>Убайдуллаев Дильшод</strong>.<br>
+        Официальный контактный адрес: <code>malivochkiru@gmail.com</code>.</p>
+      </div>
+      <div class="modal-actions-row">
+        <button class="btn btn-primary" data-close-modal style="padding: 10px 28px;">Принять и закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно обратной связи -->
+  <div class="app-modal" id="modal-contact" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" data-close-modal>✕</button>
+      <span class="modal-badge">ТЕХПОДДЕРЖКА И СВЯЗЬ</span>
+      <h3 class="modal-title">Написать нам</h3>
+      <div class="modal-body-content">
+        <p style="font-size: 14px; margin-bottom: 8px;">
+          Отправьте сообщение кураторам и разработчикам «Фундамент Знаний» или напишите напрямую на <a href="mailto:malivochkiru@gmail.com" style="color: var(--accent);">malivochkiru@gmail.com</a>.
+        </p>
+        <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
+          <div class="contact-form-group">
+            <label for="fb-name">Ваше имя</label>
+            <input type="text" id="fb-name" placeholder="Например: Азиз" required>
+          </div>
+          <div class="contact-form-group">
+            <label for="fb-email">Ваш Email</label>
+            <input type="email" id="fb-email" placeholder="name@example.com" required>
+          </div>
+          <div class="contact-form-group">
+            <label for="fb-message">Сообщение или описание вопроса</label>
+            <textarea id="fb-message" rows="4" placeholder="Опишите вопрос или предложение по работе сайта..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+            Отправить обращение
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно темы ОГП -->
+  <div class="app-modal" id="modal-topic" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close-btn" data-close-modal>✕</button>
+      <span class="modal-badge" id="modal-topic-badge">УЧЕБНАЯ ПРОГРАММА ОГП</span>
+      <h3 class="modal-title" id="modal-topic-title">Тема раздела</h3>
+      <div class="modal-body-content" id="modal-topic-body"></div>
+      <div class="modal-actions-row">
+        <button class="btn btn-primary" data-close-modal style="padding: 10px 24px;">Завершить чтение</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Движок Three.js -->
+  <script src="threejs_scenes.js"></script>
+
+  <!-- Интерактивные скрипты -->
+  <script>
+    const CONSTITUTION_ARTICLES = {
+      1: { title: "Статья 1", chapter: "Глава I. Государственный суверенитет", text: "Республика Узбекистан — суверенное, демократическое, правовое, социальное и светское государство с республиканской формой правления. Названия государства «Республика Узбекистан» и «Узбекистан» равнозначны." },
+      2: { title: "Статья 2", chapter: "Глава I. Государственный суверенитет", text: "Государство выражает волю народа, служит его интересам. Государственные органы и должностные лица ответственны перед обществом и гражданами." },
+      3: { title: "Статья 3", chapter: "Глава I. Государственный суверенитет", text: "Республика Узбекистан определяет свое национально-государственное и административно-территориальное устройство, систему органов государственной власти и управления, проводит свою внутреннюю и внешнюю политику. Государственная граница и территория Узбекистана неприкосновенны и неделимы." },
+      4: { title: "Статья 4", chapter: "Глава I. Государственный суверенитет", text: "Государственным языком Республики Узбекистан является узбекский язык. Республика Узбекистан обеспечивает уважительное отношение к языкам, обычаям и традициям наций и народностей, проживающих на ее территории, создание условий для их развития." },
+      5: { title: "Статья 5", chapter: "Глава I. Государственный суверенитет", text: "Республика Узбекистан имеет свои государственные символы — флаг, герб, гимн, утверждаемые законом. Государственные символы находятся под защитой государства." },
+      6: { title: "Статья 6", chapter: "Глава I. Государственный суверенитет", text: "Столицей Республики Узбекистан является город Ташкент." },
+      7: { title: "Статья 7", chapter: "Глава II. Народовластие", text: "Единственным источником государственной власти является народ Узбекистана. Народ Узбекистана составляют граждане Республики Узбекистан независимо от их национальности." },
+      8: { title: "Статья 8", chapter: "Глава II. Народовластие", text: "Народ осуществляет государственную власть непосредственно, а также через систему органов государственной власти." },
+      9: { title: "Статья 9", chapter: "Глава II. Народовластие", text: "Наиболее важные вопросы государственной и общественной жизни выносятся на всенародное голосование — референдум. Порядок проведения референдума определяется законом." },
+      10: { title: "Статья 10", chapter: "Глава II. Народовластие", text: "От имени народа Узбекистана могут выступать только избранные им Олий Мажлис и Президент Республики. Никакая часть общества, никакая политическая партия или общественное объединение не вправе выступать от имени народа Узбекистана." },
+      11: { title: "Статья 11", chapter: "Глава II. Народовластие", text: "Система государственной власти в Республике Узбекистан основывается на принципе разделения властей на законодательную, исполнительную и судебную." },
+      12: { title: "Статья 12", chapter: "Глава II. Народовластие", text: "В Республике Узбекистан общественная жизнь развивается на основе разнообразия политических институтов, идеологий и мнений. Никакая идеология не может устанавливаться в качестве государственной." },
+      13: { title: "Статья 13", chapter: "Глава II. Народовластие", text: "Демократия в Республике Узбекистан базируется на общечеловеческих принципах, согласно которым высшей ценностью является человек, его жизнь, свобода, честь, достоинство и другие неотъемлемые права." },
+      14: { title: "Статья 14", chapter: "Глава II. Народовластие", text: "Государство строит свою деятельность на принципах законности, социальной справедливости и согласия в интересах благосостояния человека и общества." },
+      15: { title: "Статья 15", chapter: "Глава III. Верховенство Конституции и закона", text: "В Республике Узбекистан признается безусловное верховенство Конституции и законов Республики Узбекистан. Конституция Республики Узбекистан имеет высшую юридическую силу, прямое действие и образует основу единого правового пространства на всей территории страны." },
+      16: { title: "Статья 16", chapter: "Глава III. Верховенство Конституции и закона", text: "Ни одно из положений настоящей Конституции не может толковаться в ущерб правам и интересам Республики Узбекистан. Ни один закон или иной нормативно-правовой акт не может противоречить нормам и принципам Конституции." },
+      17: { title: "Статья 17", chapter: "Глава IV. Внешняя политика", text: "Республика Узбекистан является полноправным субъектом международных отношений. Ее внешняя политика исходит из принципов суверенного равенства государств, неприменения силы или угрозы силой, нерушимости границ, мирного урегулирования споров, невмешательства во внутренние дела других государств." },
+      18: { title: "Статья 18", chapter: "Глава IV. Внешняя политика", text: "Республика Узбекистан проводит миролюбивую внешнюю политику, направленную на всемерное развитие двусторонних и многосторонних отношений с государствами и международными организациями. Республика Узбекистан может вступать в союзы, содружества и другие межгосударственные образования." },
+      19: { title: "Статья 19", chapter: "Глава V. Общие положения", text: "В Республике Узбекистан признаются и гарантируются права и свободы человека согласно общепризнанным нормам международного права и в соответствии с настоящей Конституцией. Права и свободы человека принадлежат каждому от рождения. Все граждане имеют одинаковые права и свободы и равны перед законом." },
+      20: { title: "Статья 20", chapter: "Глава V. Общие положения", text: "Гражданин Республики Узбекистан и государство связаны взаимными правами и взаимной ответственностью. Права и свободы граждан, закрепленные в Конституции и законах, являются незыблемыми, и никто не вправе без суда лишить или ограничить их." },
+      21: { title: "Статья 21", chapter: "Глава V. Общие положения", text: "Каждый человек имеет право на свободное развитие своей личности. Ни на кого без его согласия не может быть возложена обязанность, не установленная законодательством. Осуществление прав и свобод гражданином не должно нарушать права, свободы и законные интересы других лиц, государства и общества." }
+    };
+
+    const OGP_TOPICS = {
+      "7.1.1": { grade: "7 класс · Глава 1", title: "Социальные нормы и правила в обществе", desc: "Изучение роли морали, обычаев, традиций и правовых норм в регулировании человеческих отношений. Формирование представлений о взаимном уважении и культуре поведения в современном обществе Узбекистана." },
+      "7.1.2": { grade: "7 класс · Глава 1", title: "Дисциплина, порядок и закон", desc: "Понятие общественной дисциплины, правомерного поведения и правопорядка. Осознание важности соблюдения законов для безопасности и процветания каждого гражданина." },
+      "7.2.1": { grade: "7 класс · Глава 2", title: "Конвенция ООН о правах ребенка", desc: "Международные стандарты правовой защиты несовершеннолетних: право на жизнь, имя, образование, здравоохранение и защиту от всех форм дискриминации." },
+      "7.2.2": { grade: "7 класс · Глава 2", title: "Государственные гарантии защиты прав детей", desc: "Законодательство Республики Узбекистан по охране материнства и детства. Институт Омбудсмана по правам ребенка и государственные программы социальной поддержки семей." },
+      "7.3.1": { grade: "7 класс · Глава 3", title: "Уважение к Государственному флагу, гербу и гимну", desc: "История создания и сакральное значение государственных символов Республики Узбекистан. Правила использования и конституционная обязанность уважения к символам независимости." },
+      "7.3.2": { grade: "7 класс · Глава 3", title: "Национальные ценности и патриотизм", desc: "Культурное наследие великих мыслителей Востока (Аль-Хорезми, Амир Темур, Мирзо Улугбек, Алишер Навои). Воспитание преданности Родине и созидательного патриотизма." },
+      "8.1.1": { grade: "8 класс · Глава 1", title: "Понятие Конституции и её значение", desc: "Конституция как высший нормативно-правовой акт государства, обладающий высшей юридической силой и прямым действием. История конституционного развития Узбекистана." },
+      "8.1.2": { grade: "8 класс · Глава 1", title: "Основы конституционного строя", desc: "Суверенитет, демократизм, правовое и светское устройство Узбекистана. Незыблемость границ, разделение властей и приоритет прав человека." },
+      "8.2.1": { grade: "8 класс · Глава 2", title: "Личные права и свободы", desc: "Право на жизнь, свободу и личную неприкосновенность, неприкосновенность жилища, тайну переписки и телефонных переговоров, свободу совести и мысли." },
+      "8.2.2": { grade: "8 класс · Глава 2", title: "Политические, экономические и социальные права", desc: "Право на участие в управлении государством, право частной собственности, право на труд, справедливую оплату, социальное обеспечение и охрану здоровья." },
+      "8.3.1": { grade: "8 класс · Глава 3", title: "Органы государственной власти", desc: "Система высших органов власти Республики Узбекистан: Законодательная палата и Сенат Олий Мажлиса, Президент, Кабинет Министров и судебная система." },
+      "8.3.2": { grade: "8 класс · Глава 3", title: "Местное самоуправление", desc: "Институт органов самоуправления граждан (махалля) как уникальная основа гражданского общества в Узбекистане, ее полномочия и значение в решении местных вопросов." },
+      "9.1.1": { grade: "9 класс · Глава 1", title: "Понятие и принципы международного права", desc: "Система принципов Устава ООН: суверенное равенство государств, мирное урегулирование споров, неприменение силы, уважение прав человека и добросовестное выполнение обязательств." },
+      "9.1.2": { grade: "9 класс · Глава 1", title: "Международная защита прав человека", desc: "Всеобщая декларация прав человека 1948 года, международные пакты о правах человека, механизмы Комитетов ООН и участие Узбекистана в международных правовых соглашениях." },
+      "9.2.1": { grade: "9 класс · Глава 2", title: "Избирательное право в Республике Узбекистан", desc: "Избирательный кодекс Республики Узбекистан. Принципы всеобщего, равного и прямого избирательного права при тайном голосовании. Право избирать и быть избранным." },
+      "9.2.2": { grade: "9 класс · Глава 2", title: "Избирательный процесс и политические партии", desc: "Стадии избирательной кампании: формирование избирательных округов и участков, выдвижение кандидатов, предвыборная агитация, голосование и подсчет голосов." },
+      "9.3.1": { grade: "9 класс · Глава 3", title: "Понятие гражданского общества", desc: "Сущность и признаки открытого гражданского общества. Взаимодействие общества и государства на принципах партнерства, транспарентности и взаимной ответственности." },
+      "9.3.2": { grade: "9 класс · Глава 3", title: "Институты гражданского общества", desc: "Неправительственные некоммерческие организации (ННО), профессиональные союзы, средства массовой информации, общественные фонды и движения." }
+    };
+
+    // Прелоадер
+    window.addEventListener('DOMContentLoaded', () => {
+      const preloader = document.getElementById('preloader');
+      const counterEl = document.getElementById('pre-counter-value');
+      const barFill = document.getElementById('pre-bar-fill');
+      const statusText = document.getElementById('pre-status-text');
+
+      let progress = 0;
+      const startTime = performance.now();
+      const targetDuration = 1400;
+
+      function updateProgress(now) {
+        const elapsed = now - startTime;
+        progress = Math.min(Math.round((elapsed / targetDuration) * 100), 100);
+
+        if (counterEl) counterEl.textContent = progress + '%';
+        if (barFill) barFill.style.width = progress + '%';
+
+        if (progress < 40) {
+          if (statusText) statusText.textContent = 'ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ';
+        } else if (progress < 80) {
+          if (statusText) statusText.textContent = 'ЗАГРУЗКА 3D WEBGL ДВИЖКА';
+        } else {
+          if (statusText) statusText.textContent = 'ГОТОВО К ЗАПУСКУ';
+        }
+
+        if (progress < 100) {
+          requestAnimationFrame(updateProgress);
+        } else {
+          setTimeout(() => {
+            preloader.classList.add('preloader-hidden');
+            document.body.classList.remove('preloader-active');
+
+            if (window.Fundament3D && typeof window.Fundament3D.init === 'function') {
+              window.Fundament3D.init().catch(err => {
+                console.warn('Three.js engine init notice:', err);
+              });
+            }
+
+            if (window.gsap) {
+              gsap.from('.eyebrow-badge', { y: -20, opacity: 0, duration: 0.8, ease: 'power3.out' });
+              gsap.from('.hero-title', { y: 30, opacity: 0, duration: 1, delay: 0.2, ease: 'power3.out' });
+              gsap.from('.hero-descriptor', { y: 20, opacity: 0, duration: 0.8, delay: 0.4, ease: 'power3.out' });
+              gsap.from('.hero-actions', { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
+              gsap.from('.hero-shield-decor', { scale: 0.8, opacity: 0, duration: 1.2, delay: 0.3, ease: 'back.out(1.5)' });
+            }
+          }, 200);
+        }
+      }
+
+      requestAnimationFrame(updateProgress);
+    });
+
+    // Навигация
+    const mainNav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) mainNav.classList.add('scrolled');
+      else mainNav.classList.remove('scrolled');
+    }, { passive: true });
+
+    // Drawer
+    const navBurger = document.getElementById('nav-burger');
+    const navDrawer = document.getElementById('nav-drawer');
+    const drawerCloseBtn = document.getElementById('drawer-close-btn');
+    const drawerLinks = document.querySelectorAll('.drawer-nav-link');
+
+    function openDrawer() {
+      navDrawer.classList.add('open');
+      navBurger.classList.add('open');
+    }
+
+    function closeDrawer() {
+      navDrawer.classList.remove('open');
+      navBurger.classList.remove('open');
+    }
+
+    if (navBurger) navBurger.addEventListener('click', () => {
+      if (navDrawer.classList.contains('open')) closeDrawer();
+      else openDrawer();
+    });
+
+    if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+    drawerLinks.forEach(link => link.addEventListener('click', closeDrawer));
+
+    const drawerConstInput = document.getElementById('drawer-const-input');
+    if (drawerConstInput) {
+      drawerConstInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const query = drawerConstInput.value.trim();
+          closeDrawer();
+          const mainSearchInput = document.getElementById('const-search-input');
+          if (mainSearchInput) {
+            mainSearchInput.value = query;
+            triggerConstSearch(query);
+            document.getElementById('constitution')?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    }
+
+    // Табы классов ОГП
+    const gradeTabs = document.querySelectorAll('.grade-tab-btn');
+    const gradePanels = document.querySelectorAll('.grade-content-panel');
+
+    gradeTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const grade = btn.getAttribute('data-grade');
+        gradeTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        gradePanels.forEach(p => p.classList.remove('active'));
+        document.getElementById(`grade-panel-${grade}`)?.classList.add('active');
+      });
+    });
+
+    // Аккордеоны ОГП
+    document.querySelectorAll('.chapter-trigger').forEach(trigger => {
+      trigger.addEventListener('click', function () {
+        const card = this.closest('.chapter-card');
+        const body = card.querySelector('.chapter-body');
+        const isOpen = card.classList.contains('open');
+
+        if (isOpen) {
+          card.classList.remove('open');
+          body.style.maxHeight = null;
+        } else {
+          card.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Клик по разделу ОГП
+    document.querySelectorAll('.section-item-action').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const code = this.getAttribute('data-topic');
+        const topic = OGP_TOPICS[code];
+        if (topic) {
+          document.getElementById('modal-topic-badge').textContent = topic.grade.toUpperCase();
+          document.getElementById('modal-topic-title').textContent = topic.title;
+          document.getElementById('modal-topic-body').innerHTML = `
+            <p>${topic.desc}</p>
+            <div style="margin-top: 16px; padding: 14px 18px; background: rgba(79, 142, 247, 0.08); border-left: 3px solid var(--accent); border-radius: 6px; font-size: 14px;">
+              <strong>Ключевые компетенции:</strong> правовая культура, понимание основ государственного устройства Республики Узбекистан, осознание конституционных прав и обязанностей.
+            </div>
+          `;
+          openModal('modal-topic');
+        }
+      });
+    });
+
+    // Живой поиск Конституции
+    const constSearchInput = document.getElementById('const-search-input');
+    const constSearchClear = document.getElementById('const-search-clear');
+    const constCards = document.querySelectorAll('.chapter-card-const');
+    const emptyState = document.getElementById('const-empty-state');
+    const searchStatus = document.getElementById('search-status-bar');
+
+    function triggerConstSearch(query) {
+      const q = query.toLowerCase().trim();
+      let matchedCount = 0;
+
+      if (q.length > 0) constSearchClear.style.display = 'flex';
+      else constSearchClear.style.display = 'none';
+
+      constCards.forEach(card => {
+        const searchText = card.getAttribute('data-search-text') || '';
+        const chapterNum = card.getAttribute('data-chapter');
+        let matches = searchText.includes(q) || ('глава ' + chapterNum).includes(q);
+
+        const pills = card.querySelectorAll('.article-pill');
+        pills.forEach(pill => {
+          const artNum = pill.getAttribute('data-art');
+          const artData = CONSTITUTION_ARTICLES[artNum];
+          if (artData) {
+            const artFullText = (artData.title + ' ' + artData.text).toLowerCase();
+            if (artFullText.includes(q) || ('статья ' + artNum).includes(q) || artNum === q) {
+              matches = true;
+              pill.style.background = 'rgba(79, 142, 247, 0.45)';
+              pill.style.borderColor = 'var(--accent)';
+            } else {
+              pill.style.background = '';
+              pill.style.borderColor = '';
+            }
+          }
+        });
+
+        if (matches) {
+          card.style.display = 'block';
+          matchedCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (q.length === 0) {
+        document.querySelectorAll('.article-pill').forEach(p => {
+          p.style.background = '';
+          p.style.borderColor = '';
+        });
+        emptyState.classList.remove('visible');
+        searchStatus.innerHTML = '<span>5 Глав · 21 Статья доступна для чтения</span>';
+      } else {
+        if (matchedCount === 0) {
+          emptyState.classList.add('visible');
+          searchStatus.innerHTML = `<span style="color: var(--rust);">По запросу «${escapeHtml(query)}» ничего не найдено</span>`;
+        } else {
+          emptyState.classList.remove('visible');
+          searchStatus.innerHTML = `<span style="color: var(--accent3);">Найдено глав: ${matchedCount}</span>`;
+        }
+      }
+    }
+
+    if (constSearchInput) constSearchInput.addEventListener('input', (e) => triggerConstSearch(e.target.value));
+    if (constSearchClear) constSearchClear.addEventListener('click', () => {
+      constSearchInput.value = '';
+      triggerConstSearch('');
+      constSearchInput.focus();
+    });
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Модальное окно статей Конституции
+    let currentModalArticleNumber = null;
+    document.querySelectorAll('.article-pill').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const num = this.getAttribute('data-art');
+        const art = CONSTITUTION_ARTICLES[num];
+        if (art) {
+          currentModalArticleNumber = num;
+          document.getElementById('modal-article-badge').textContent = art.chapter.toUpperCase();
+          document.getElementById('modal-article-title').textContent = art.title + ' Конституции РУз';
+          document.getElementById('modal-article-body').innerHTML = `
+            <p style="font-size: 17px; color: #ffffff; line-height: 1.8;">${art.text}</p>
+            <div style="margin-top: 18px; padding: 14px 18px; background: rgba(14, 22, 44, 0.7); border-radius: 12px; font-size: 13px; color: var(--fog);">
+              <span>Официальный статус: действующая норма Конституции Республики Узбекистан</span>
+            </div>
+          `;
+          openModal('modal-article');
+        }
+      });
+    });
+
+    const copyArticleBtn = document.getElementById('modal-copy-article-btn');
+    if (copyArticleBtn) {
+      copyArticleBtn.addEventListener('click', () => {
+        if (!currentModalArticleNumber) return;
+        const art = CONSTITUTION_ARTICLES[currentModalArticleNumber];
+        if (art) {
+          const textToCopy = `${art.title} Конституции Республики Узбекистан\n${art.chapter}\n\n${art.text}\n\nИсточник: fundament-znaniy.uz`;
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            copyArticleBtn.textContent = 'Скопировано! ✓';
+            setTimeout(() => { copyArticleBtn.textContent = 'Скопировать текст'; }, 2000);
+          }).catch(() => {
+            alert('Текст статьи скопирован.');
+          });
+        }
+      });
+    }
+
+    // FAQ аккордеон
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const item = this.closest('.faq-item');
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+
+        document.querySelectorAll('.faq-item').forEach(other => {
+          if (other !== item) {
+            other.classList.remove('open');
+            const otherAns = other.querySelector('.faq-answer');
+            if (otherAns) otherAns.style.maxHeight = null;
+          }
+        });
+
+        if (isOpen) {
+          item.classList.remove('open');
+          answer.style.maxHeight = null;
+        } else {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // CRM виджет
+    const crmPulseBtn = document.getElementById('crm-pulse-btn');
+    const crmPopup = document.getElementById('crm-popup-card');
+    const crmCloseBtn = document.getElementById('crm-popup-close');
+    const crmActionBtn = document.getElementById('crm-popup-action-btn');
+
+    if (crmPulseBtn) crmPulseBtn.addEventListener('click', () => crmPopup.classList.toggle('open'));
+    if (crmCloseBtn) crmCloseBtn.addEventListener('click', () => crmPopup.classList.remove('open'));
+    if (crmActionBtn) crmActionBtn.addEventListener('click', () => {
+      crmPopup.classList.remove('open');
+      openModal('modal-contact');
+    });
+
+    // Модальные окна
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(modal) {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-close-modal]').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const modal = this.closest('.app-modal');
+        if (modal) closeModal(modal);
+      });
+    });
+
+    document.querySelectorAll('.app-modal').forEach(modal => {
+      modal.addEventListener('click', function (e) {
+        if (e.target === this) closeModal(this);
+      });
+    });
+
+    const openAgreement = () => openModal('modal-agreement');
+    const openContact = () => openModal('modal-contact');
+
+    document.getElementById('footer-agreement-link')?.addEventListener('click', openAgreement);
+    document.getElementById('drawer-agreement-link')?.addEventListener('click', openAgreement);
+    document.getElementById('footer-contact-link')?.addEventListener('click', openContact);
+    document.getElementById('drawer-contact-link')?.addEventListener('click', openContact);
+
+    const copyEmailBtn = document.getElementById('footer-copy-email-btn');
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigator.clipboard.writeText('malivochkiru@gmail.com').then(() => {
+          alert('Email скопирован в буфер обмена: malivochkiru@gmail.com');
+        }).catch(() => {
+          window.location.href = 'mailto:malivochkiru@gmail.com';
+        });
+      });
+    }
+
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('fb-name').value;
+      alert(`Спасибо за обращение, ${name}! Ваше сообщение принято и передано куратору проекта (Алмаз Зафарович).`);
+      document.getElementById('feedback-form').reset();
+      closeModal(document.getElementById('modal-contact'));
+    }
+  </script>
+</body>
+</html>
